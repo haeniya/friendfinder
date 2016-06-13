@@ -21,7 +21,7 @@ class UserRepository
     }
 
     function getFriends($userid){
-        $selection = $this->db->prepare('Select username from users where id IN (Select user2_id from relationships where user1_id = ?)');
+        $selection = $this->db->prepare('Select username from users where id IN (Select user2_id from relationships where user1_id = ? and friends = 1)');
         $selection->bindValue(1, $userid);
         $selection->execute();
 

@@ -14,6 +14,7 @@ $( document ).ready(function() {
 
     $("nav").on("click", "#friendlist", function(event){
         event.preventDefault();
+        getOpenRequests();
         getFriendList();
     });
 
@@ -111,6 +112,12 @@ function appendFriendNode(friend){
 function appendPersonNode(person){
     var personList = $('#persons ul'),
         personCreated = '<li>'+ person.username+'<i class="fa fa-plus-square-o" aria-hidden="true"></i></li>';
+    personList.append(personCreated);
+}
+
+function appendFriendRequestNode(person){
+    var personList = $('#friendrequests ul'),
+        personCreated = '<li>'+ person.username+'<i class="fa fa-plus-square-o" aria-hidden="true"></i><i class="fa fa-plus-square-o" aria-hidden="true"></i></li>';
     personList.append(personCreated);
 }
 
@@ -214,6 +221,26 @@ function searchPeople(prefix){
                 appendPersonNode(data[index]);
             });
            // switchView('friendlist');
+            //data - response from server
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.log("fail");
+            console.log(textStatus);
+            console.log(errorThrown);
+        }
+    });
+}
+function getOpenRequests(){
+    $.ajax({
+        url : "restAPI/FriendRequests",
+        type: "get",
+        dataType: 'json',
+        success: function(data, textStatus, jqXHR)
+        {
+            $(data).each(function(index){
+                appendFriendRequestNode(data[index]);
+            });
+            switchView('allpersons');
             //data - response from server
         },
         error: function (jqXHR, textStatus, errorThrown) {
