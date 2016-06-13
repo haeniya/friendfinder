@@ -1,5 +1,5 @@
 <?php
-
+session_start();
 /**
  * Created by PhpStorm.
  * User: Luecu
@@ -21,8 +21,6 @@ class PositionRepository
     }
 
     function savePosition($position){
-        $position = json_decode($position, true);
-        session_start();
         $currentTime = time();
         $user_id = $_SESSION['userid'];
         $selection = $this->db->prepare('SELECT * FROM positions WHERE user_id = ' . $user_id);
@@ -30,15 +28,14 @@ class PositionRepository
         $results = $selection->fetchAll(PDO::FETCH_ASSOC);
         if(count($results) > 0){
             //update position
-            $sql = 'UPDATE positions SET `lat` = \''. $position['lat'] .'\', `long` = \'' . $position['lng'] . '\', `timestamp` = ' . $currentTime . ' WHERE user_id = '. $user_id;
+            $sql = 'UPDATE positions SET `lat` = \''. $position['lat'] .'\', `lng` = \'' . $position['lng'] . '\', `timestamp` = \'' . $currentTime . '\' WHERE user_id = '. $user_id;
             $statement = $this->db->prepare($sql);
             $statement->execute();
             return $statement->rowCount();
         }else{
             //insert new position
-            $sql = 'INSERT INTO positions (`user_id`, `lat`, `long`, `timestamp`) VALUES('. $user_id .',\''. $position['lat'] .'\', \'' . $position['lng'] . '\', '. $currentTime .')';
+            $sql = 'INSERT INTO positions (`user_id`, `lat`, `lng`, `timestamp`) VALUES('. $user_id .',\''. $position['lat'] .'\', \'' . $position['lng'] . '\', '. $currentTime .')';
             try {
-                echo $sql;
                 $this->db->exec($sql);
                 return 1;
             }

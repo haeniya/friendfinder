@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Created by PhpStorm.
  * User: Luecu
@@ -20,6 +19,8 @@ class UserRepository
         $this->db = null;
     }
 
+    function getAllUsers() {
+        $selection = $this->db->prepare('SELECT * FROM users');
     function getFriends($userid){
         $selection = $this->db->prepare('Select username from users where id IN (Select user2_id from relationships where user1_id = ? and friends = 1)');
         $selection->bindValue(1, $userid);
@@ -62,7 +63,6 @@ class UserRepository
         $count=count($results);
         $resultArray = array('loginstatus' => false);
         if($count==1) {
-            session_start();
             $_SESSION["username"] = $credentials['username'];
             $_SESSION["userid"] = $results[0]['id'];
             $resultArray['loginstatus'] = true;
@@ -73,6 +73,15 @@ class UserRepository
             return json_encode($resultArray);
         }
     }
+
+    function getFriends(){
+        $sql = 'SELECT * FROM users u LEFT JOIN positions p ON (u.id = p.user_id) WHERE u.id IN (SELECT user2_id FROM relationships WHERE user1_id = '. $_SESSION['userid'] .')';
+        $statement = $this->db->prepare($sql);
+        $statement->execute();
+        $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+        return $result;
+    }
+
     function register($data) {
         $selection = $this->db->prepare('INSERT INTO users (firstname, lastname, username, password) VALUES (:firstname, :lastname, :username, :password)');
         $selection->bindParam(':firstname', $data['firstname']);

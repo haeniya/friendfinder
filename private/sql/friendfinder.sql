@@ -29,8 +29,9 @@ SET time_zone = "+00:00";
 CREATE TABLE IF NOT EXISTS `positions` (
   `id` int(11) NOT NULL,
   `lat` double NOT NULL,
-  `long` double NOT NULL,
-  `user_id` int(11) NOT NULL
+  `lng` double NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `timestamp` TIMESTAMP NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -68,6 +69,9 @@ CREATE TABLE IF NOT EXISTS `users` (
 -- Indizes für die Tabelle `users`
 --
 ALTER TABLE `users`
+ ADD PRIMARY KEY (`id`);
+
+ ALTER TABLE `positions`
  ADD PRIMARY KEY (`id`);
 
 --

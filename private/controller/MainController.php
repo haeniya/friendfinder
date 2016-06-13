@@ -20,8 +20,8 @@ class MainController
     }
     /*Update current Users Position*/
     public function updatePosition($position){
-        //$result['success'] = $this->positionRepo->savePosition($position);
-       // return json_encode($result);
+        $result['success'] = $this->positionRepo->savePosition($position);
+        return json_encode($result);
     }
 
     /*Login user*/
@@ -35,16 +35,13 @@ class MainController
         $result = false;
         return $this->userRepo->register($data);
     }
+
     /*get all friends*/
     public function getFriends(){
-        $result = null;
-        return $this->userRepo->getFriends($_SESSION["userid"]);
-    }
-
-    /*get all open friendrequest*/
-    public function getFriendRequests(){
-        $result = null;
-        return $this->userRepo->getFriendRequests($_SESSION["userid"]);
+        if(isset($_SESSION['userid']) && !empty($_SESSION['userid'])){
+            $friends = $this->userRepo->getFriends();
+            return json_encode($friends);
+        }
     }
 
     /**Create new friend request
@@ -60,6 +57,12 @@ class MainController
     public function deleteFriend(){
         $result = null;
         return $result;
+    }
+
+    /*get all open friendrequest*/
+    public function getFriendRequests(){
+        $result = null;
+        return $this->userRepo->getFriendRequests($_SESSION["userid"]);
     }
 
     /*decline friend request*/
