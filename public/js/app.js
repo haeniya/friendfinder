@@ -151,6 +151,8 @@ function saveCurrentPosition(){
             console.log(data);
             if(data.success) {
                 console.log("position successfully updated");
+            }else{
+                console.error("Failed to update position!");
             }
         }, "json");
     });
