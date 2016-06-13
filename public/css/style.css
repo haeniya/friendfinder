@@ -34,7 +34,6 @@ main > section {
 
 #register, #allpersons, #map {
     display: none;
-    min-height: 500px;
     height: -moz-calc(100% - 210px); /* Firefox */
     height: -webkit-calc(100% - 210px); /* Chrome, Safari */
     height: calc(100% - 210px); /* IE9+ and future browsers */
@@ -86,7 +85,6 @@ nav li {
     overflow: hidden;
     padding: 0 25px 15px 25px;
     background: #345f7f;
-    -moz-border-radius: 4px 4px 0 0; -webkit-border-radius: 4px 4px 0 0; border-radius: 4px 4px 0 0;
     text-align: left;
 }
 
@@ -113,7 +111,6 @@ nav li {
 .form-bottom {
     padding: 25px 25px 30px 25px;
     background: #3d648a;
-    -moz-border-radius: 0 0 4px 4px; -webkit-border-radius: 0 0 4px 4px; border-radius: 0 0 4px 4px;
     text-align: left;
 }
 
