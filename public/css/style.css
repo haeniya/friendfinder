@@ -10,7 +10,6 @@ body {
 main {
     margin: auto;
     width: 100%;
-    color: #fff;
 }
 
 section {
@@ -117,4 +116,8 @@ nav li {
 
 #custom-search-input .glyphicon-search{
     font-size: 23px;
+}
+
+.info-window {
+    color: black;
 }

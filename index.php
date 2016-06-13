@@ -118,11 +118,11 @@
 
     </section>
 
-    <section id="friends" class="tab">
+    <section id="friendlist" class="tab">
 
     </section>
     <nav class="navbar navbar-default navbar-fixed-bottom">
-        <li><a data-tab="where" href="#">Find friends</a></li>
+        <li><a data-tab="friendlist" href="#">Friendlist</a></li>
     </nav>
 </main>
 </body>

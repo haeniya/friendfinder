@@ -11,8 +11,6 @@ $( document ).ready(function() {
         checkLogin({username:$("#form-username").val(), password:$("#form-password").val()});
     });
 
-
-
     $("#registration-form").on("click", "#register-send-btn", function(event){
         event.preventDefault();
         registerUser({username: $("#form-register-username").val(), firstname: $("#form-first-name").val(), lastname: $("#form-last-name").val(), place: $("#form-place").val(), password: $("#form-register-password").val()} );
@@ -56,13 +54,33 @@ function loadMap(position) {
     var mapOptions = { center: here, zoom: MAP_ZOOM };
     console.log(mapOptions);
     map = new google.maps.Map(document.getElementById('map'), mapOptions);
-    var markerIcon = 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=P|0000FF|ffffff';
-    createMarker(here, markerIcon);
-    searchFriends(here);
+    var markerIcon = 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=P|0000FF|ffffff',
+        tooltipData = '<div class="info-window">Your Position</div>',
+        infoWindow = new google.maps.InfoWindow({
+            content: tooltipData
+        });
+    createMarker(here, markerIcon, infoWindow);
+    searchFriends();
 }
 
-function searchFriends(location){
-    //TODO: search friends
+function searchFriends(){
+    $.get( "restAPI/friends", function(data) {
+        console.log(data instanceof Array);
+        data.forEach(function(item){
+            var markerIcon = 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=|FF0000|ffffff',
+                position = new google.maps.LatLng(item.lat, item.lng),
+                date = new Date(item.timestamp),
+                tooltipData = '<div class="info-window"><h3>'+ item.firstname + ' ' + item.lastname +'</h3> \
+                                <p>Last time logged in: ' + date + '</p><button class="btn btn-info btn-lg" type="button"> \
+                                Route \
+                                </button></div>',
+                infoWindow = new google.maps.InfoWindow({
+                    content: tooltipData
+                });
+
+            createMarker(position, markerIcon, infoWindow);
+        });
+    }, 'json');
 }
 
 function nearbySearchCallback(results, status) {
@@ -76,19 +94,22 @@ function nearbySearchCallback(results, status) {
     }
 }
 
-function createMarker(location, iconUrl){
-    console.log(location);
+function createMarker(location, iconUrl, infoWindow){
     var markerOptions = {
         map: map,
         position: location,
         icon: iconUrl
     };
-    new google.maps.Marker(markerOptions);
+    var marker = new google.maps.Marker(markerOptions);
+    google.maps.event.addListener(marker, 'click', function() {
+        infoWindow.open(map, marker);
+    });
 }
 
 function appendWhoNode(place){
     var placesList = $('#restaurants'),
         restaurant = '<li>'+ place.name +  ', ' + place.vicinity +'</li>';
+
     placesList.append(restaurant);
 }
 
@@ -143,7 +164,6 @@ function registerUser(formData){
 }
 
 function saveCurrentPosition(){
-    console.log("save position");
     navigator.geolocation.getCurrentPosition(function(position){
         var positionData = {lat: position.coords.latitude, lng: position.coords.longitude};
 

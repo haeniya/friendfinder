@@ -14,7 +14,8 @@ $app->get('/', function () use ($app) {
 });
 $app->post('/updatePosition', function (Request $request) use ($app) {
     $data = $request->getParsedBody();
-    return $app->controller->updatePosition($data['position']);
+    $position = $position = json_decode($data['position'], true);
+    return $app->controller->updatePosition($position);
 });
 $app->post('/login', function (Request $request, Response $response) use ($app) {
     $data = $request->getParsedBody();
@@ -32,7 +33,7 @@ $app->get('/users/{prefix}', function (Request $request, Response $response) use
     return $app->controller->getUsers($request->getAttribute('prefix'));
 });
 
-$app->get('/friends', function () use ($app) {
+$app->get('/friends', function() use ($app) {
     return $app->controller->getFriends();
 });
 $app->post('/friends/{friend}', function (Request $request, Response $response) use ($app) {
@@ -59,6 +60,5 @@ $app->post('/FriendRequests/decline', function (Request $request, Response $resp
 });
 
 $app->run();
-
 
 ?>

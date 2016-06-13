@@ -35,10 +35,13 @@ class MainController
         $result = false;
         return $this->userRepo->register($data);
     }
+
     /*get all friends*/
     public function getFriends(){
-        $result = null;
-        return $result;
+        if(isset($_SESSION['userid']) && !empty($_SESSION['userid'])){
+            $friends = $this->userRepo->getFriends();
+            return json_encode($friends);
+        }
     }
 
     /**Create new friend request
