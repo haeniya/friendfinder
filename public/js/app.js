@@ -117,7 +117,9 @@ function saveCurrentPosition(){
         var positionData = {lat: position.coords.latitude, lng: position.coords.longitude};
 
         $.post( "restAPI/updatePosition", {position: JSON.stringify(positionData)}, function(data) {
-            console.log("position updated");
+            if(data.success) {
+                console.log("position successfully updated");
+            }
         }, "json");
     });
 }

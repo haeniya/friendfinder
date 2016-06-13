@@ -10,19 +10,18 @@
  */
 class MainController
 {
-    var $userRepo;
+    public $userRepo;
+    public $positionRepo;
 
-    function __construct(UserRepository $userRepository)
+    function __construct(UserRepository $userRepository, PositionRepository $positionRepository)
     {
         $this->userRepo = $userRepository;
+        $this->positionRepo = $positionRepository;
     }
     /*Update current Users Position*/
     public function updatePosition($position){
-        $result = null;
-        var_dump(json_decode($position)); die;
-
-
-        return $result;
+        $result['success'] = $this->positionRepo->savePosition($position);
+        return json_encode($result);
     }
 
     /*Login user*/
