@@ -17,6 +17,10 @@ main {
     width: 100%;
 }
 
+h1, h2, h3 {
+    margin-top:0;
+
+}
 header {
     background: #345f7f;
     height: 150px;
@@ -27,7 +31,6 @@ main > section {
     top: 0;
     left: 0;
     right: 0;
-    padding: 20px 30px 20px 20px;
     background: #3d648a;
 
 }
@@ -38,7 +41,10 @@ main > section {
     height: -webkit-calc(100% - 210px); /* Chrome, Safari */
     height: calc(100% - 210px); /* IE9+ and future browsers */
 }
-#login {
+#allpersons {
+    padding-top:10px;
+}
+#login, #register {
     height:100%;
 }
 
