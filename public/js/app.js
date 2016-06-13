@@ -3,6 +3,7 @@
 */
 const MAP_RADIUS = 10000;
 const MAP_ZOOM = 15;
+var map;
 
 $( document ).ready(function() {
     $("#login-form").on("click", "#login-btn", function(event){
@@ -26,31 +27,53 @@ function switchView(viewId){
     $('#' + viewId).show();
 }
 
-function initMap(position) {
-    // Create a map object and specify the DOM element for display.
-    var myLatLng = {lat: position.coords.latitude, lng: position.coords.longitude};
-    var map = new google.maps.Map(document.getElementById('map'), {
-        center: {lat: position.coords.latitude, lng: position.coords.longitude},
-        scrollwheel: false,
-        zoom: 8
-    });
-    var marker=new google.maps.Marker({
-        position:myLatLng,
-    });
-
-    marker.setMap(map);
-}
 function getLocation() {
     if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(showPosition);
+        navigator.geolocation.getCurrentPosition(loadMap);
     } else {
-        //x.innerHTML = "Geolocation is not supported by this browser.";
+        console.error("Geo location not supported by this browser.")
     }
 }
-function showPosition(position) {
-   // x.innerHTML = "Latitude: " + position.coords.latitude +"<br>Longitude: " + position.coords.longitude;
-    console.log(position.coords.latitude);
-    initMap(position);
+
+function loadMap(position) {
+    var here = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+    var mapOptions = { center: here, zoom: MAP_ZOOM };
+    console.log(mapOptions);
+    map = new google.maps.Map(document.getElementById('friend-map'), mapOptions);
+    var markerIcon = 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=P|0000FF|ffffff';
+    createMarker(here, markerIcon);
+    searchFriends(here);
+}
+
+function searchFriends(location){
+    //TODO: search friends
+}
+
+function nearbySearchCallback(results, status) {
+    if (status == google.maps.places.PlacesServiceStatus.OK) {
+        for (var i = 0; i < results.length; i++) {
+            var place = results[i];
+            appendWhoNode(place);
+            var markerIcon = 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld='+(i+1)+'|FF0000|ffffff';
+            createMarker(place.geometry.location, markerIcon);
+        }
+    }
+}
+
+function createMarker(location, iconUrl){
+    console.log(location);
+    var markerOptions = {
+        map: map,
+        position: location,
+        icon: iconUrl
+    };
+    new google.maps.Marker(markerOptions);
+}
+
+function appendWhoNode(place){
+    var placesList = $('#restaurants'),
+        restaurant = '<li>'+ place.name +  ', ' + place.vicinity +'</li>';
+    placesList.append(restaurant);
 }
 
 function checkLogin(formData){
@@ -61,8 +84,9 @@ function checkLogin(formData){
         success: function(data, textStatus, jqXHR)
         {
             if(data == "1"){
-                console.log("erolgreich eingeloggt");
+                console.log("erfolgreich eingeloggt");
                 switchView('map');
+                getLocation();
             }
             //data - response from server
         },

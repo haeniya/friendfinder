@@ -17,8 +17,9 @@
 <main>
     <section id="search" class="tab">
         <div class="input-group input-group-lg">
-                <span class="input-group-addon" id="sizing-addon1"><i class="fa fa-search"
-                                                                      aria-hidden="true"></i></span>
+                <span class="input-group-addon" id="sizing-addon1">
+                    <i class="fa fa-search" aria-hidden="true"></i>
+                </span>
             <input type="text" class="form-control" placeholder="Search people" aria-describedby="sizing-addon1">
         </div>
     </section>
@@ -107,11 +108,17 @@
     </section>
 
     <section id="map" class="tab">
-        <div class="input-group input-group-lg">
-            <span class="input-group-addon" id="sizing-addon1"><i class="fa fa-search" aria-hidden="true"></i></span>
-            <input type="text" class="form-control" placeholder="Search people" aria-describedby="sizing-addon1">
+        <div id="custom-search-input">
+            <div class="input-group col-md-12">
+                <input type="text" class="form-control input-lg" placeholder="Search..." />
+                    <span class="input-group-btn">
+                        <button class="btn btn-info btn-lg" type="button">
+                            <i class="glyphicon glyphicon-search"></i>
+                        </button>
+                    </span>
+            </div>
         </div>
-        <div id="people-map">
+        <div id="friend-map">
 
         </div>
     </section>
@@ -119,7 +126,7 @@
     <section id="friends" class="tab">
 
     </section>
-    <nav class="navbar navbar-default hidden navbar-fixed-bottom">
+    <nav class="navbar navbar-default navbar-fixed-bottom">
         <li><a data-tab="where" href="#">Find friends</a></li>
     </nav>
 </main>
