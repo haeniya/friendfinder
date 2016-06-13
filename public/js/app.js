@@ -46,6 +46,14 @@ $( document ).ready(function() {
         getOpenRequests();
         getFriendList();
     });
+    $("#register").on("keyup", "#form-confirm-pwd", function(event){
+        if($(this).val() != $('#form-register-password').val()) {
+            $(this).css("border", "1px solid red");
+        }
+        else {
+            $(this).css("border", "none");
+        }
+    });
     $("nav").on("click", "#logout", function(event){
         event.preventDefault();
         logout();
