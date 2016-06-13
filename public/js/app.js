@@ -1,7 +1,6 @@
 /**
  * Created by Luecu on 17.05.2016.
 */
-const MAP_RADIUS = 10000;
 const MAP_ZOOM = 15;
 var map;
 
@@ -83,8 +82,7 @@ function loadMap(position) {
 }
 
 function searchFriends(){
-    $.get( "restAPI/friends", function(data) {
-        console.log(data instanceof Array);
+    $.get( "restAPI/friendsPosition", function(data) {
         data.forEach(function(item){
             var markerIcon = 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=|FF0000|ffffff',
                 position = new google.maps.LatLng(item.lat, item.lng),

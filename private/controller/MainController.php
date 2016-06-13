@@ -37,10 +37,16 @@ class MainController
     }
 
     /*get all friends*/
+    public function getFriendsPosition(){
+        if(isset($_SESSION['userid']) && !empty($_SESSION['userid'])){
+            return json_encode($this->userRepo->getFriendsPosition());
+        }
+    }
+
+    /*get all friends*/
     public function getFriends(){
         if(isset($_SESSION['userid']) && !empty($_SESSION['userid'])){
-            $friends = $this->userRepo->getFriends();
-            return json_encode($friends);
+            return $friends = $this->userRepo->getFriends($_SESSION['userid']);
         }
     }
 
