@@ -16,6 +16,14 @@ $( document ).ready(function() {
         getOpenRequests();
         getFriendList();
     });
+    $("nav").on("click", "#logout", function(event){
+        event.preventDefault();
+        logout();
+    });
+    $("nav").on("click", "#showmap", function(event){
+        event.preventDefault();
+        switchView("map");
+    });
 
     $("#login-form").on("click", "#login-btn", function(event){
         event.preventDefault();
@@ -297,6 +305,8 @@ function deleteFriend(friendID){
         success: function(data, textStatus, jqXHR)
         {
             console.log("friend deleted");
+            $('#allpersons .notification').text("Freund erfolgreich gelöscht!");
+            $('#allpersons .notification').fadeIn();
             $('#friends li[data-friend-id='+friendID+']').remove();
         },
         error: function (jqXHR, textStatus, errorThrown) {
@@ -314,6 +324,14 @@ function answerFriendRequest(answer, friendID) {
         dataType: 'json',
         success: function(data, textStatus, jqXHR)
         {
+            if(anser == "accepted"){
+                $('#allpersons .notification').text("Freundschaftsanfrage wurde akzeptiert!");
+                $('#allpersons .notification').fadeIn();
+            }
+            else {
+                $('#allpersons .notification').text("Freundschaftsanfrage wurde abgelehnt!");
+                $('#allpersons .notification').fadeIn();
+            }
             console.log("worked");
             //$('#friends li[data-friend-id='+friendID+']').remove();
         },
@@ -332,6 +350,25 @@ function sendFriendRequest(personID){
         success: function(data, textStatus, jqXHR)
         {
             console.log("worked");
+            $('#allpersons .notification').text("Freundschaftsanfrage wurde erfolgreich gesendet!");
+            $('#allpersons .notification').fadeIn();
+            //$('#friends li[data-friend-id='+friendID+']').remove();
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.log("fail");
+            console.log(textStatus);
+            console.log(errorThrown);
+        }
+    });
+}
+
+function logout(){
+    $.ajax({
+        url : "restAPI/logout",
+        type: "get",
+        success: function(data, textStatus, jqXHR)
+        {
+            switchView('login');
             //$('#friends li[data-friend-id='+friendID+']').remove();
         },
         error: function (jqXHR, textStatus, errorThrown) {

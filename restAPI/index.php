@@ -31,6 +31,10 @@ $app->post('/register', function (Request $request, Response $response) use ($ap
 $app->get('/users/{prefix}', function (Request $request, Response $response) use ($app) {
     return $app->controller->getUsers($request->getAttribute('prefix'));
 });
+$app->get('/logout', function (Request $request, Response $response) use ($app) {
+    session_destroy();
+    return null;
+});
 $app->get('/friendsPosition', function() use ($app) {
     return $app->controller->getFriendsPosition();
 });

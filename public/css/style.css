@@ -12,12 +12,18 @@ main {
     width: 100%;
 }
 
-section {
+header {
+    background: #345f7f;
+    height: 150px;
+}
+
+main > section {
     position: relative;
     top: 0;
     left: 0;
     right: 0;
     padding: 20px 30px 20px 20px;
+    background: #3d648a;
 }
 
 #register, #allpersons, #map {
@@ -25,17 +31,17 @@ section {
     min-height: 600px;
 }
 
-#search, .userinfo {
+#search, #userinfo {
     display: none;
 }
 
-#allpersons {
-    color:black;
+.notification {
+    display:none;
+    font-weight:bold;
 }
 
 #allpersons li {
     list-style:none;
-    color:black;
 }
 #allpersons li i {
     cursor:pointer;
@@ -104,6 +110,9 @@ nav li {
     border: solid 1px #E4E4E4;
     border-radius: 6px;
     background-color: #fff;
+    margin:10px;
+    position:relative;
+    top:40px;
 }
 
 #custom-search-input input{

@@ -15,7 +15,7 @@
 </head>
 <body>
 <main>
-    <div id="userinfo"><?php session_start(); echo $_SESSION["userid"]; ?></div>
+    <div id="userinfo"><?php session_start(); if(isset($_SESSION["userid"])){echo $_SESSION["userid"];} ?></div>
     <header id="search">
         <div id="custom-search-input">
             <div class="input-group col-md-12">
@@ -119,6 +119,7 @@
     </section>
 
     <section id="allpersons" class="tab">
+        <div class="notification"></div>
         <div id="persons">
             <h3>Suchresultate:</h3>
             <ul>
@@ -139,7 +140,9 @@
         </div>
     </section>
     <nav class="navbar navbar-default navbar-fixed-bottom">
-        <li><a id="friendlist" data-tab="friendlist" href="#">Find friends</a></li>
+        <li><a id="friendlist" data-tab="friendlist" href="#">Find friends | </a></li>
+        <li><a id="logout" data-tab="logout" href="#">Logout | </a></li>
+        <li><a id="showmap" data-tab="showmap" href="#">Go to Map</a></li>
     </nav>
 </main>
 </body>

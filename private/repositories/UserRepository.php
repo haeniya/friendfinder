@@ -24,8 +24,9 @@ class UserRepository
     }
 
     function getFriends($userid){
-        $selection = $this->db->prepare('Select username, id from users where id IN (Select user2_id from relationships where user1_id = ? and friends = 1)');
+        $selection = $this->db->prepare('Select username, id from users where id IN (Select user2_id from relationships where user1_id = ? and friends = 1) OR id IN (Select user1_id from relationships where user2_id = ? and friends = 1)');
         $selection->bindValue(1, $userid);
+        $selection->bindValue(2, $userid);
         $selection->execute();
 
         $results = $selection->fetchAll(PDO::FETCH_ASSOC);
@@ -34,7 +35,7 @@ class UserRepository
     }
 
     function getFriendRequests($userid){
-        $selection = $this->db->prepare('Select username, id from users where id IN (Select user2_id from relationships where user1_id = ? and friends = 0)');
+        $selection = $this->db->prepare('Select username, id from users where id IN (Select user1_id from relationships where user2_id = ? and friends = 0)');
         $selection->bindValue(1, $userid);
         $selection->execute();
 
