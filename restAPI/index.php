@@ -22,7 +22,10 @@ $app->post('/login', function (Request $request, Response $response) use ($app) 
     $loginCredentials['password'] = filter_var($data['password'], FILTER_SANITIZE_STRING);
     return $app->controller->login($loginCredentials);
 });
-
+$app->post('/register', function (Request $request, Response $response) use ($app) {
+    $registerData = $request->getParsedBody();
+    return $app->controller->register($registerData);
+});
 $app->get('/users/{prefix}', function (Request $request, Response $response) use ($app) {
 
     return $app->controller->getUsers($request->getAttribute('prefix'));

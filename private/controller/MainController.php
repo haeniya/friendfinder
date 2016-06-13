@@ -31,6 +31,11 @@ class MainController
         return $this->userRepo->checkLogin($loginCredentials);
     }
 
+    /*Register user*/
+    public function register($data){
+        $result = false;
+        return $this->userRepo->register($data);
+    }
     /*get all friends*/
     public function getFriends(){
         $result = null;

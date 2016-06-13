@@ -53,6 +53,18 @@ class UserRepository
             return json_encode($resultArray);
         }
     }
+    function register($data) {
+        $selection = $this->db->prepare('INSERT INTO users (firstname, lastname, username, password) VALUES (:firstname, :lastname, :username, :password)');
+        $selection->bindParam(':firstname', $data['firstname']);
+        $selection->bindParam(':lastname', $data['lastname']);
+        $selection->bindParam(':username', $data['username']);
+        $selection->bindParam(':password', sha1($data['password']));
+        $selection->execute();
+        $selection->closeCursor();
+
+        $resultArray = array('registerstatus' => true);
+        return json_encode($resultArray);
+    }
 }
 
 /* Tests

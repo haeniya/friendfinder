@@ -69,13 +69,14 @@
                 <div class="form-top-left">
                     <h3>Sign up now</h3>
                     <p>Fill in the form below to get instant access:</p>
+                    <div class="notification"></div>
                 </div>
                 <div class="form-top-right">
                     <i class="fa fa-pencil"></i>
                 </div>
             </div>
             <div class="form-bottom">
-                <form role="form" action="" method="post" class="registration-form">
+                <form role="form" action="" method="post" id="registration-form">
                     <div class="form-group">
                         <label class="sr-only" for="form-register-username">Username</label>
                         <input type="text" name="form-register-username" placeholder="Username"
@@ -98,15 +99,15 @@
                     </div>
                     <div class="form-group">
                         <label class="sr-only" for="form-register-password">Password</label>
-                        <input type="password" name="form-place" placeholder="Password" class="form-control"
+                        <input type="password" name="form-register-password" placeholder="Password" class="form-control"
                                id="form-register-password">
                     </div>
                     <div class="form-group">
                         <label class="sr-only" for="form-confirm-pwd">Password confirm</label>
-                        <input type="password" name="form-place" placeholder="Confirm password" class="form-control"
+                        <input type="password" name="form-confirm-pwd" placeholder="Confirm password" class="form-control"
                                id="form-confirm-pwd">
                     </div>
-                    <button type="submit" class="btn">Register</button>
+                    <button id="register-send-btn" type="submit" class="btn">Register</button>
                     <button id="back-login-btn" name="back-login-btn" class="btn">Back</button>
                 </form>
             </div>
