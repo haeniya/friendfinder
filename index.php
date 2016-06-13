@@ -15,7 +15,11 @@
 </head>
 <body>
 <main>
-    <div id="userinfo"><?php session_start(); echo $_SESSION["userid"]; ?></div>
+    <div id="userinfo"
+         data-lat=""
+         data-lng=""
+         data-info="<?php session_start(); echo isset($_SESSION["userid"]) ? $_SESSION["userid"] : 0; ?>">
+    </div>
     <header id="search">
         <div id="custom-search-input">
             <div class="input-group col-md-12">

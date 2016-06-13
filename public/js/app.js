@@ -5,11 +5,41 @@ const MAP_ZOOM = 15;
 var map;
 
 $( document ).ready(function() {
-    if($('#userinfo').text() != ''){
+    if(userIsLoggedIn()){
         switchView('map');
         getLocation();
         setInterval(saveCurrentPosition, 20000);
+    }else{
+        switchView('login');
     }
+
+    //Listen to dynamically added route buttons
+    $(document).on('click', '.route-btn', function(event){
+        // calculate route to this marker
+        var directionsDisplay = new google.maps.DirectionsRenderer();
+        var directionsService = new google.maps.DirectionsService();
+        directionsDisplay.setMap(map);
+        directionsDisplay.setOptions( { suppressMarkers: true } );
+
+        var infoWindow = $(this).closest('.info-window');
+        var currentPosition = $('#userinfo');
+        var start = new google.maps.LatLng(currentPosition.data('lat'), currentPosition.data('lng'));
+        var end = new google.maps.LatLng(infoWindow.data('lat'), infoWindow.data('lng'));
+
+        var request = {
+            origin: start,
+            destination:end,
+            travelMode: google.maps.TravelMode.DRIVING
+        };
+
+        directionsService.route(request, function(result, status) {
+            if (status == google.maps.DirectionsStatus.OK) {
+                infoWindow.find('.distance').text(result.routes[0].legs[0].distance.text);
+                infoWindow.find('.duration').text(result.routes[0].legs[0].duration.text);
+                directionsDisplay.setDirections(result);
+            }
+        });
+    });
 
     $("nav").on("click", "#friendlist", function(event){
         event.preventDefault();
@@ -27,8 +57,6 @@ $( document ).ready(function() {
         searchPeople($(this).val());
     });
 
-
-
     $("#registration-form").on("click", "#register-send-btn", function(event){
         event.preventDefault();
         registerUser({username: $("#form-register-username").val(), firstname: $("#form-first-name").val(), lastname: $("#form-last-name").val(), place: $("#form-place").val(), password: $("#form-register-password").val()} );
@@ -45,6 +73,11 @@ $( document ).ready(function() {
         switchView('login');
     });
 });
+
+function userIsLoggedIn(){
+    var userId = $('#userinfo').data('info');
+    return userId > 0;
+}
 
 function switchView(viewId){
     $('.tab').hide();
@@ -69,14 +102,17 @@ function getLocation() {
 
 function loadMap(position) {
     var here = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-    var mapOptions = { center: here, zoom: MAP_ZOOM };
-    console.log(mapOptions);
+    var mapOptions = { center: here, zoom: MAP_ZOOM},
+        currentPosition = $('#userinfo');
+
     map = new google.maps.Map(document.getElementById('map'), mapOptions);
     var markerIcon = 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=P|0000FF|ffffff',
-        tooltipData = '<div class="info-window">Your Position</div>',
+        tooltipData = '<div id="current-pos" class="info-window">Your Position</div>',
         infoWindow = new google.maps.InfoWindow({
             content: tooltipData
         });
+    currentPosition.data('lat', position.coords.latitude);
+    currentPosition.data('lng', position.coords.longitude);
     createMarker(here, markerIcon, infoWindow);
     searchFriends();
 }
@@ -87,28 +123,17 @@ function searchFriends(){
             var markerIcon = 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=|FF0000|ffffff',
                 position = new google.maps.LatLng(item.lat, item.lng),
                 date = new Date(item.timestamp),
-                tooltipData = '<div class="info-window"><h3>'+ item.firstname + ' ' + item.lastname +'</h3> \
-                                <p>Last time logged in: ' + date + '</p><button class="btn btn-info btn-lg" type="button"> \
+                tooltipData = '<div class="info-window" data-lat="'+item.lat+'" data-lng="'+item.lng+'"> \
+                               <h3>'+ item.firstname + ' ' + item.lastname +'</h3> \
+                                <p>Last time logged in: ' + date + '</p><button class="btn btn-info route-btn" type="button"> \
                                 Route \
-                                </button></div>',
+                                </button><div class="distance"></div><div class="duration"></div></div>',
                 infoWindow = new google.maps.InfoWindow({
                     content: tooltipData
                 });
-
             createMarker(position, markerIcon, infoWindow);
         });
     }, 'json');
-}
-
-function nearbySearchCallback(results, status) {
-    if (status == google.maps.places.PlacesServiceStatus.OK) {
-        for (var i = 0; i < results.length; i++) {
-            var place = results[i];
-            appendWhoNode(place);
-            var markerIcon = 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld='+(i+1)+'|FF0000|ffffff';
-            createMarker(place.geometry.location, markerIcon);
-        }
-    }
 }
 
 function createMarker(location, iconUrl, infoWindow){
@@ -165,6 +190,7 @@ function checkLogin(formData){
         }
     });
 }
+
 function registerUser(formData){
     console.log(formData);
     $.ajax({
@@ -199,6 +225,9 @@ function saveCurrentPosition(){
             console.log(data);
             if(data.success) {
                 console.log("position successfully updated");
+                var current = $('#userinfo');
+                current.data('lat', positionData.lat);
+                current.data('lng', positionData.lng);
             }else{
                 console.error("Failed to update position!");
             }
@@ -226,6 +255,7 @@ function getFriendList(){
         }
     });
 }
+
 function searchPeople(prefix){
     $.ajax({
         url : "restAPI/users/"+prefix,
@@ -233,7 +263,6 @@ function searchPeople(prefix){
         dataType: 'json',
         success: function(data, textStatus, jqXHR)
         {
-            console.log("success");
             console.log(data);
             $('#persons ul').empty();
             $(data).each(function(index){
