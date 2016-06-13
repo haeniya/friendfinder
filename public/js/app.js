@@ -10,6 +10,11 @@ $( document ).ready(function() {
         event.preventDefault();
         checkLogin({username:$("#form-username").val(), password:$("#form-password").val()});
     });
+    $("#registration-form").on("click", "#register-send-btn", function(event){
+        event.preventDefault();
+        registerUser({username: $("#form-register-username").val(), firstname: $("#form-first-name").val(), lastname: $("#form-last-name").val(), place: $("#form-place").val(), password: $("#form-register-password").val()} );
+    });
+
 
     $('#register-btn').on('click', function (event) {
         event.preventDefault();
@@ -105,6 +110,31 @@ function checkLogin(formData){
         },
         error: function (jqXHR, textStatus, errorThrown) {
             console.log("fail");
+        }
+    });
+}
+function registerUser(formData){
+    console.log(formData);
+    $.ajax({
+        url : "restAPI/register",
+        type: "POST",
+        data : formData,
+        dataType: 'json',
+        success: function(data, textStatus, jqXHR)
+        {
+            if(data.registerstatus){
+                switchView('login');
+            }
+            else {
+                $("#register").find(".notification").text("Etwas ist schiefgelaufen");
+            }
+            console.log(data);
+            //data - response from server
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.log("fail");
+            console.log(textStatus);
+            console.log(errorThrown);
         }
     });
 }
