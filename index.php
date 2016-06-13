@@ -15,6 +15,7 @@
 </head>
 <body>
 <main>
+    <div class"userinfo"><?php session_start(); echo $_SESSION["userid"]; ?></div>
     <header id="search">
         <div id="custom-search-input">
             <div class="input-group col-md-12">
@@ -33,6 +34,7 @@
                 <div class="form-top-left">
                     <h3>Login to our site</h3>
                     <p>Enter username and password to log on:</p>
+                    <div class="notification"></div>
                 </div>
                 <div class="form-top-right">
                     <i class="fa fa-key"></i>
