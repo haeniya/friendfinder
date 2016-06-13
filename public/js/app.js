@@ -85,6 +85,7 @@ function appendWhoNode(place){
 }
 
 function checkLogin(formData){
+    console.log(formData);
     $.ajax({
         url : "restAPI/login",
         type: "POST",
