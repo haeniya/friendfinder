@@ -15,7 +15,7 @@
 </head>
 <body>
 <main>
-    <div class"userinfo"><?php session_start(); echo $_SESSION["userid"]; ?></div>
+    <div id="userinfo"><?php session_start(); echo $_SESSION["userid"]; ?></div>
     <header id="search">
         <div id="custom-search-input">
             <div class="input-group col-md-12">
@@ -118,11 +118,28 @@
 
     </section>
 
-    <section id="friendlist" class="tab">
+    <section id="allpersons" class="tab">
+        <div id="persons">
+            <h3>Suchresultate:</h3>
+            <ul>
 
+            </ul>
+        </div>
+        <div id="friendrequests">
+            <h3>Offene Anfragen:</h3>
+            <ul>
+
+            </ul>
+        </div>
+        <div id="friends">
+            <h3>Freunde:</h3>
+            <ul>
+
+            </ul>
+        </div>
     </section>
     <nav class="navbar navbar-default navbar-fixed-bottom">
-        <li><a data-tab="friendlist" href="#">Friendlist</a></li>
+        <li><a id="friendlist" data-tab="friendlist" href="#">Find friends</a></li>
     </nav>
 </main>
 </body>

@@ -21,6 +21,30 @@ class UserRepository
 
     function getAllUsers() {
         $selection = $this->db->prepare('SELECT * FROM users');
+    function getFriends($userid){
+        $selection = $this->db->prepare('Select username from users where id IN (Select user2_id from relationships where user1_id = ?)');
+        $selection->bindValue(1, $userid);
+        $selection->execute();
+
+        $results = $selection->fetchAll(PDO::FETCH_ASSOC);
+        $selection->closeCursor();
+        echo json_encode($results);
+    }
+
+    function getFriendRequests($userid){
+        $selection = $this->db->prepare('Select username from users where id IN (Select user2_id from relationships where user1_id = ? and friends = 0)');
+        $selection->bindValue(1, $userid);
+        $selection->execute();
+
+        $results = $selection->fetchAll(PDO::FETCH_ASSOC);
+        $selection->closeCursor();
+        echo json_encode($results);
+    }
+
+    function getUsers($prefix) {
+
+        $selection = $this->db->prepare('SELECT * FROM users where username like ?');
+        $selection->bindValue(1, $prefix.'%');
         $selection->execute();
 
         $results = $selection->fetchAll(PDO::FETCH_ASSOC);

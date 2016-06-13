@@ -1,5 +1,5 @@
 <?php
-
+session_start();
 
 
 /**
@@ -59,10 +59,10 @@ class MainController
         return $result;
     }
 
-    /*get all friend requests*/
+    /*get all open friendrequest*/
     public function getFriendRequests(){
         $result = null;
-        return $result;
+        return $this->userRepo->getFriendRequests($_SESSION["userid"]);
     }
 
     /*decline friend request*/
@@ -79,7 +79,7 @@ class MainController
 
     /*get user according to prefix, used for search*/
     public function getUsers($prefix){
-        return $this->userRepo->getAllUsers();
+        return $this->userRepo->getUsers($prefix);
     }
 
 }
