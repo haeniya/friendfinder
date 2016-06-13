@@ -34,7 +34,7 @@ class UserRepository
         //TODO: überprüfe Login
         $selection = $this->db->prepare('SELECT * FROM users where username = ? and password = ?');
         $selection->bindValue(1, $credentials['username']);
-        $selection->bindValue(2, $credentials['password']);
+        $selection->bindValue(2, sha1($credentials['password']));
         $selection->execute();
         $results = $selection->fetchAll(PDO::FETCH_ASSOC);
 
@@ -44,7 +44,9 @@ class UserRepository
         if($count==1) {
             session_start();
             $_SESSION["username"] = $credentials['username'];
+            $_SESSION["userid"] = $results[0]['id'];
             $resultArray['loginstatus'] = true;
+            $resultArray['userid'] = $results[0]['id'];
             return json_encode($resultArray);
         }
         else {

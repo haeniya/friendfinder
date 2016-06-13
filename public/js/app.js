@@ -96,11 +96,10 @@ function checkLogin(formData){
             if(data.loginstatus){
                 switchView('map');
                 getLocation();
-                setInterval(saveCurrentPosition, 20000)
+                setInterval(saveCurrentPosition, 20000);
             }
             else {
-                var errormessage = $("<h2>").text("Benutzername oder Passwort falsch");
-                $("#login").find(".form-top").append(errormessage);
+                $("#login").find(".notification").text("Benutzername oder Passwort falsch");
             }
             console.log(data);
             //data - response from server

@@ -10,7 +10,6 @@ header('Content-type:application/json; charset=uft-8');
 $app = new \Slim\App();
 $app->controller = new MainController(new UserRepository(new DatabaseHelper()));
 $app->get('/', function () use ($app) {
-
 });
 $app->post('/updatePosition', function (Request $request) use ($app) {
     $data = $request->getParsedBody();

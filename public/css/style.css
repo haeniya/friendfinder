@@ -26,7 +26,7 @@ section {
     min-height: 600px;
 }
 
-#search {
+#search, .userinfo {
     display: none;
 }
 
