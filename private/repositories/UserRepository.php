@@ -24,7 +24,7 @@ class UserRepository
     }
 
     function getFriends($userid){
-        $selection = $this->db->prepare('Select username from users where id IN (Select user2_id from relationships where user1_id = ? and friends = 1)');
+        $selection = $this->db->prepare('Select username, id from users where id IN (Select user2_id from relationships where user1_id = ? and friends = 1)');
         $selection->bindValue(1, $userid);
         $selection->execute();
 
@@ -34,7 +34,7 @@ class UserRepository
     }
 
     function getFriendRequests($userid){
-        $selection = $this->db->prepare('Select username from users where id IN (Select user2_id from relationships where user1_id = ? and friends = 0)');
+        $selection = $this->db->prepare('Select username, id from users where id IN (Select user2_id from relationships where user1_id = ? and friends = 0)');
         $selection->bindValue(1, $userid);
         $selection->execute();
 
@@ -43,9 +43,31 @@ class UserRepository
         echo json_encode($results);
     }
 
+    function acceptFriendRequest($friendID, $userID){
+        $selection = $this->db->prepare('UPDATE relationships SET friends = 1 where user1_id= ? and user2_id= ?');
+        $selection->bindValue(2, $friendID);
+        $selection->bindValue(1, $userID);
+        $selection->execute();
+        $selection->closeCursor();
+        $resultArray = array('acceptedfriendrequest' => true);
+        return json_encode($resultArray);
+        return $resultArray;
+    }
+
+    function declineFriendRequest($friendID, $userID){
+        $selection = $this->db->prepare('DELETE FROM relationships where user1_id= ? and user2_id= ?');
+        $selection->bindValue(2, $friendID);
+        $selection->bindValue(1, $userID);
+        $selection->execute();
+        $selection->closeCursor();
+        $resultArray = array('deletedfriendrequest' => true);
+        return json_encode($resultArray);
+        return $resultArray;
+    }
+
     function getUsers($prefix) {
 
-        $selection = $this->db->prepare('SELECT * FROM users where username like ?');
+        $selection = $this->db->prepare('SELECT username,id FROM users where username like ?');
         $selection->bindValue(1, $prefix.'%');
         $selection->execute();
 
@@ -94,6 +116,27 @@ class UserRepository
         $selection->closeCursor();
 
         $resultArray = array('registerstatus' => true);
+        return json_encode($resultArray);
+    }
+
+    function deleteFriend($friendID){
+        $sql =  $this->db->prepare('DELETE FROM relationships where user1_id = ? AND user2_id = '.$_SESSION['userid'].' or user2_id = ? AND user1_id = '.$_SESSION['userid'].'');
+        $sql->bindValue(1, $friendID);
+        $sql->bindValue(2, $friendID);
+        $sql->execute();
+        $resultArray = array('deletestatus' => true);
+        return json_encode($resultArray);
+        return $resultArray;
+    }
+
+    function sendFriendRequest($userID, $friendID){
+        $selection = $this->db->prepare('INSERT INTO relationships (user1_id, user2_id, friends) VALUES (:user1_id, :user2_id, 0)');
+        $selection->bindParam(':user1_id', $userID);
+        $selection->bindParam(':user2_id', $friendID);
+        $selection->execute();
+        $selection->closeCursor();
+
+        $resultArray = array('sendFriendRequest' => true);
         return json_encode($resultArray);
     }
 }

@@ -37,27 +37,21 @@ $app->get('/friendsPosition', function() use ($app) {
 $app->get('/friends', function() use ($app) {
     return $app->controller->getFriends();
 });
-$app->post('/friends/{friend}', function (Request $request, Response $response) use ($app) {
-    return $app->controller->deleteFriend($request->getAttribute('friend'));
+$app->get('/friends/{friendID}', function (Request $request, Response $response) use ($app) {
+    return $app->controller->deleteFriend($request->getAttribute('friendID'));
 });
 
 $app->get('/FriendRequests', function (Request $request, Response $response) use ($app) {
     return $app->controller->getFriendRequests();
 });
-$app->post('/FriendRequests/new', function (Request $request, Response $response) use ($app) {
-    return $app->controller->newFriendRequest($request->getAttribute('userid'));
+$app->get('/FriendRequests/new/{userID}', function (Request $request, Response $response) use ($app) {
+    return $app->controller->sendFriendRequest($request->getAttribute('userID'));
 });
-$app->post('/FriendRequests/accept', function (Request $request, Response $response) use ($app) {
-    $data = $request->getParsedBody();
-    $friendRequestData = [];
-    $friendRequestData['userID'] = filter_var($data['userID'], FILTER_SANITIZE_STRING);
-    return $app->controller->acceptFriendRequest($friendRequestData);
+$app->get('/FriendRequests/accept/{friendID}', function (Request $request, Response $response) use ($app) {
+    return $app->controller->acceptFriendRequest($request->getAttribute('friendID'));
 });
-$app->post('/FriendRequests/decline', function (Request $request, Response $response) use ($app) {
-    $data = $request->getParsedBody();
-    $friendRequestData = [];
-    $friendRequestData['userID'] = filter_var($data['userID'], FILTER_SANITIZE_STRING);
-    return $app->controller->acceptFriendRequest($friendRequestData);
+$app->get('/FriendRequests/decline/{friendID}', function (Request $request, Response $response) use ($app) {
+    return $app->controller->declineFriendRequest($request->getAttribute('friendID'));
 });
 
 $app->run();

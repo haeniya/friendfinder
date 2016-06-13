@@ -60,9 +60,13 @@ class MainController
     }
 
     /*delete friend*/
-    public function deleteFriend(){
-        $result = null;
-        return $result;
+    public function deleteFriend($friendID){
+        if($_SESSION['userid']) {
+            return $this->userRepo->deleteFriend($friendID);
+        }
+        else {
+            return "Permission error";
+        }
     }
 
     /*get all open friendrequest*/
@@ -72,20 +76,22 @@ class MainController
     }
 
     /*decline friend request*/
-    public function declineFriendRequest(){
-        $result = null;
-        return $result;
+    public function declineFriendRequest($friendID){
+        return $this->userRepo->declineFriendRequest($_SESSION["userid"], $friendID);
     }
 
     /*accept friend request*/
-    public function acceptFriendRequest(){
-        $result = null;
-        return $result;
+    public function acceptFriendRequest($friendID){
+        return $this->userRepo->acceptFriendRequest($_SESSION["userid"], $friendID);
     }
 
     /*get user according to prefix, used for search*/
     public function getUsers($prefix){
         return $this->userRepo->getUsers($prefix);
+    }
+
+    public function sendFriendRequest($friendID){
+        return $this->userRepo->sendFriendRequest($_SESSION["userid"], $friendID);
     }
 
 }
