@@ -1,3 +1,8 @@
+body, html, main {
+    height: 100%;
+    padding: 0;
+    margin:0;
+}
 body {
     font-family: 'Roboto', sans-serif;
     font-size: 16px;
@@ -24,11 +29,18 @@ main > section {
     right: 0;
     padding: 20px 30px 20px 20px;
     background: #3d648a;
+
 }
 
 #register, #allpersons, #map {
     display: none;
     min-height: 500px;
+    height: -moz-calc(100% - 210px); /* Firefox */
+    height: -webkit-calc(100% - 210px); /* Chrome, Safari */
+    height: calc(100% - 210px); /* IE9+ and future browsers */
+}
+#login {
+    height:100%;
 }
 
 #search, #userinfo {
@@ -110,7 +122,7 @@ nav li {
     border: solid 1px #E4E4E4;
     border-radius: 6px;
     background-color: #fff;
-    margin:10px;
+    margin:0 10px;
     position:relative;
     top:40px;
 }
