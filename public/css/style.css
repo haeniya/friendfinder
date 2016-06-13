@@ -28,7 +28,7 @@ main > section {
 
 #register, #allpersons, #map {
     display: none;
-    min-height: 600px;
+    min-height: 500px;
 }
 
 #search, #userinfo {

@@ -43,7 +43,7 @@ CREATE TABLE IF NOT EXISTS `positions` (
 CREATE TABLE IF NOT EXISTS `relationships` (
   `user1_id` int(11) NOT NULL,
   `user2_id` int(11) NOT NULL,
-  `accepted` boolean
+  `friends` boolean
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------

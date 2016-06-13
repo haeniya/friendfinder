@@ -100,7 +100,7 @@ class UserRepository
     }
 
     function getFriendsPosition(){
-        $sql = 'SELECT * FROM users u LEFT JOIN positions p ON (u.id = p.user_id) WHERE u.id IN (SELECT user2_id FROM relationships WHERE user1_id = '. $_SESSION['userid'] .')';
+        $sql = 'SELECT * FROM users u LEFT JOIN positions p ON (u.id = p.user_id) WHERE u.id IN (SELECT user2_id FROM relationships WHERE user1_id = '. $_SESSION['userid'] .' OR user2_id = '. $_SESSION['userid'] .')';
         $statement = $this->db->prepare($sql);
         $statement->execute();
         $result = $statement->fetchAll(PDO::FETCH_ASSOC);
