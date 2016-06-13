@@ -21,12 +21,17 @@ section {
     padding: 20px 30px 20px 20px;
 }
 
-#register, #friends, #map, #search {
+#register, #friends, #map {
     display: none;
-    height:300px;
+    min-height: 600px;
+}
+
+#search {
+    display: none;
 }
 
 nav {
+    display: none;
     background-color: yellow;
     position: absolute;
     bottom: 0;

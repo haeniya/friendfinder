@@ -19,6 +19,9 @@ class MainController
     /*Update current Users Position*/
     public function updatePosition($position){
         $result = null;
+        var_dump(json_decode($position)); die;
+
+
         return $result;
     }
 

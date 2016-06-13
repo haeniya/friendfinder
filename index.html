@@ -15,14 +15,18 @@
 </head>
 <body>
 <main>
-    <section id="search" class="tab">
-        <div class="input-group input-group-lg">
-                <span class="input-group-addon" id="sizing-addon1">
-                    <i class="fa fa-search" aria-hidden="true"></i>
-                </span>
-            <input type="text" class="form-control" placeholder="Search people" aria-describedby="sizing-addon1">
+    <header id="search">
+        <div id="custom-search-input">
+            <div class="input-group col-md-12">
+                <input type="text" class="form-control input-lg" placeholder="Search..." />
+                    <span class="input-group-btn">
+                        <button class="btn btn-info btn-lg" type="button">
+                            <i class="glyphicon glyphicon-search"></i>
+                        </button>
+                    </span>
+            </div>
         </div>
-    </section>
+    </header>
     <section id="login" class="tab">
         <div class="form-box">
             <div class="form-top">
@@ -108,19 +112,7 @@
     </section>
 
     <section id="map" class="tab">
-        <div id="custom-search-input">
-            <div class="input-group col-md-12">
-                <input type="text" class="form-control input-lg" placeholder="Search..." />
-                    <span class="input-group-btn">
-                        <button class="btn btn-info btn-lg" type="button">
-                            <i class="glyphicon glyphicon-search"></i>
-                        </button>
-                    </span>
-            </div>
-        </div>
-        <div id="friend-map">
 
-        </div>
     </section>
 
     <section id="friends" class="tab">

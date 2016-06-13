@@ -15,6 +15,7 @@ class UserRepository
     {
         $this->db = $databaseHelper->getDBConnection();
     }
+
     function __destruct() {
         $this->db = null;
     }

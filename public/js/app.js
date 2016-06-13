@@ -24,6 +24,14 @@ $( document ).ready(function() {
 
 function switchView(viewId){
     $('.tab').hide();
+    var searchBox = $('#search');
+    if(viewId == 'login' || viewId == 'register'){
+        searchBox.hide();
+        $('nav').hide();
+    }else{
+        $('nav').show();
+        searchBox.show();
+    }
     $('#' + viewId).show();
 }
 
@@ -39,7 +47,7 @@ function loadMap(position) {
     var here = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
     var mapOptions = { center: here, zoom: MAP_ZOOM };
     console.log(mapOptions);
-    map = new google.maps.Map(document.getElementById('friend-map'), mapOptions);
+    map = new google.maps.Map(document.getElementById('map'), mapOptions);
     var markerIcon = 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=P|0000FF|ffffff';
     createMarker(here, markerIcon);
     searchFriends(here);
@@ -81,18 +89,28 @@ function checkLogin(formData){
         url : "restAPI/login",
         type: "POST",
         data : formData,
-        success: function(data, textStatus, jqXHR)
-        {
+        success: function(data, textStatus, jqXHR) {
             if(data == "1"){
                 console.log("erfolgreich eingeloggt");
                 switchView('map');
                 getLocation();
+                setInterval(saveCurrentPosition, 20000)
             }
             //data - response from server
         },
-        error: function (jqXHR, textStatus, errorThrown)
-        {
+        error: function (jqXHR, textStatus, errorThrown) {
             console.log("fail");
         }
+    });
+}
+
+function saveCurrentPosition(){
+    console.log("save position");
+    navigator.geolocation.getCurrentPosition(function(position){
+        var positionData = {lat: position.coords.latitude, lng: position.coords.longitude};
+
+        $.post( "restAPI/updatePosition", {position: JSON.stringify(positionData)}, function(data) {
+            console.log("position updated");
+        }, "json");
     });
 }

@@ -13,7 +13,8 @@ $app->get('/', function () use ($app) {
 
 });
 $app->post('/updatePosition', function (Request $request) use ($app) {
-    return $app->controller->updatePosition($request->getAttribute('position'));
+    $data = $request->getParsedBody();
+    return $app->controller->updatePosition($data['position']);
 });
 $app->post('/login', function (Request $request, Response $response) use ($app) {
     $data = $request->getParsedBody();
