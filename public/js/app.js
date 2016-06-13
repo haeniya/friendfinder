@@ -117,7 +117,7 @@ function appendPersonNode(person){
 
 function appendFriendRequestNode(person){
     var personList = $('#friendrequests ul'),
-        personCreated = '<li>'+ person.username+'<i class="fa fa-plus-square-o" aria-hidden="true"></i><i class="fa fa-plus-square-o" aria-hidden="true"></i></li>';
+        personCreated = '<li>'+ person.username+'<i class="fa fa-plus-square-o" aria-hidden="true"></i><i class="fa fa-minus-square-o" aria-hidden="true"></i></li>';
     personList.append(personCreated);
 }
 
