@@ -35,7 +35,6 @@ $app->get('/users/{prefix}', function (Request $request, Response $response) use
 
 $app->get('/friends', function() use ($app) {
     return $app->controller->getFriends();
-    return "{test}";
 });
 $app->post('/friends/{friend}', function (Request $request, Response $response) use ($app) {
     return $app->controller->deleteFriend($request->getAttribute('friend'));
