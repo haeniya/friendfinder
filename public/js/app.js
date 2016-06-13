@@ -8,7 +8,7 @@ var map;
 $( document ).ready(function() {
     $("#login-form").on("click", "#login-btn", function(event){
         event.preventDefault();
-        checkLogin({username:$("#username").val(), password:$("#password").val()});
+        checkLogin({username:$("#form-username").val(), password:$("#form-password").val()});
     });
 
     $('#register-btn').on('click', function (event) {
@@ -77,17 +77,23 @@ function appendWhoNode(place){
 }
 
 function checkLogin(formData){
+    console.log(formData);
     $.ajax({
         url : "restAPI/login",
         type: "POST",
         data : formData,
+        dataType: 'json',
         success: function(data, textStatus, jqXHR)
         {
-            if(data == "1"){
-                console.log("erfolgreich eingeloggt");
+            if(data.loginstatus){
                 switchView('map');
                 getLocation();
             }
+            else {
+                var errormessage = $("<h2>").text("Benutzername oder Passwort falsch");
+                $("#login").find(".form-top").append(errormessage);
+            }
+            console.log(data);
             //data - response from server
         },
         error: function (jqXHR, textStatus, errorThrown)
