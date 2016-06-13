@@ -22,6 +22,23 @@ $( document ).ready(function() {
         checkLogin({username:$("#form-username").val(), password:$("#form-password").val()});
     });
 
+    $("#friendrequests").on("click", ".accept", function(event){
+        event.preventDefault();
+        answerFriendRequest("accept",$(this).parent().data("person-id"));
+    });
+    $("#friendrequests").on("click", ".decline", function(event){
+        event.preventDefault();
+        answerFriendRequest("decline", $(this).parent().data("person-id"));
+    });
+    $("#friends").on("click", ".delete", function(event){
+        event.preventDefault();
+        deleteFriend($(this).parent().data("friend-id"));
+    });
+    $("#persons").on("click", ".add", function(event){
+        event.preventDefault();
+        sendFriendRequest($(this).parent().data("person-id"));
+    });
+
     $("header").on("keyup", "#custom-search-input input", function(event){
         event.preventDefault();
         searchPeople($(this).val());
@@ -125,19 +142,19 @@ function createMarker(location, iconUrl, infoWindow){
 
 function appendFriendNode(friend){
     var friendList = $('#friends ul'),
-        person = '<li>'+ friend.username+'<i class="fa fa-minus-square-o" aria-hidden="true"></i></li>';
+        person = '<li data-friend-id='+friend.id+'>'+ friend.username+'<i class="fa fa-minus-square-o delete" aria-hidden="true"></i></li>';
     friendList.append(person);
 }
 
 function appendPersonNode(person){
     var personList = $('#persons ul'),
-        personCreated = '<li>'+ person.username+'<i class="fa fa-plus-square-o" aria-hidden="true"></i></li>';
+        personCreated = '<li data-person-id='+person.id+'>'+ person.username+'<i class="fa fa-plus-square-o add" aria-hidden="true"></i></li>';
     personList.append(personCreated);
 }
 
 function appendFriendRequestNode(person){
     var personList = $('#friendrequests ul'),
-        personCreated = '<li>'+ person.username+'<i class="fa fa-plus-square-o" aria-hidden="true"></i><i class="fa fa-minus-square-o" aria-hidden="true"></i></li>';
+        personCreated = '<li data-person-id='+person.id+'>'+ person.username+'<i class="fa fa-plus-square-o accept" aria-hidden="true"></i><i class="fa fa-minus-square-o decline" aria-hidden="true"></i></li>';
     personList.append(personCreated);
 }
 
@@ -213,6 +230,7 @@ function getFriendList(){
         dataType: 'json',
         success: function(data, textStatus, jqXHR)
         {
+            $('#friends ul').empty();
             $(data).each(function(index){
                 appendFriendNode(data[index]);
             });
@@ -256,11 +274,65 @@ function getOpenRequests(){
         dataType: 'json',
         success: function(data, textStatus, jqXHR)
         {
+            $('#friendrequests ul').empty();
             $(data).each(function(index){
                 appendFriendRequestNode(data[index]);
             });
             switchView('allpersons');
             //data - response from server
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.log("fail");
+            console.log(textStatus);
+            console.log(errorThrown);
+        }
+    });
+}
+function deleteFriend(friendID){
+    console.log(friendID);
+    $.ajax({
+        url : "restAPI/friends/"+friendID,
+        type: "get",
+        dataType: 'json',
+        success: function(data, textStatus, jqXHR)
+        {
+            console.log("friend deleted");
+            $('#friends li[data-friend-id='+friendID+']').remove();
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.log("fail");
+            console.log(textStatus);
+            console.log(errorThrown);
+        }
+    });
+}
+function answerFriendRequest(answer, friendID) {
+    console.log(friendID);
+    $.ajax({
+        url : "restAPI/FriendRequests/"+answer+"/"+friendID,
+        type: "get",
+        dataType: 'json',
+        success: function(data, textStatus, jqXHR)
+        {
+            console.log("worked");
+            //$('#friends li[data-friend-id='+friendID+']').remove();
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.log("fail");
+            console.log(textStatus);
+            console.log(errorThrown);
+        }
+    });
+}
+function sendFriendRequest(personID){
+    $.ajax({
+        url : "restAPI/FriendRequests/new/" +personID,
+        type: "get",
+        dataType: 'json',
+        success: function(data, textStatus, jqXHR)
+        {
+            console.log("worked");
+            //$('#friends li[data-friend-id='+friendID+']').remove();
         },
         error: function (jqXHR, textStatus, errorThrown) {
             console.log("fail");
