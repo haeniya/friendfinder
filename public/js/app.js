@@ -97,8 +97,7 @@ function checkLogin(formData){
                 switchView('map');
                 getLocation();
                 setInterval(saveCurrentPosition, 20000);
-            }
-            else {
+            } else {
                 $("#login").find(".notification").text("Benutzername oder Passwort falsch");
             }
             console.log(data);
