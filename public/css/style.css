@@ -21,13 +21,26 @@ section {
     padding: 20px 30px 20px 20px;
 }
 
-#register, #friends, #map {
+#register, #allpersons, #map {
     display: none;
     min-height: 600px;
 }
 
 #search, .userinfo {
     display: none;
+}
+
+#allpersons {
+    color:black;
+}
+
+#allpersons li {
+    list-style:none;
+    color:black;
+}
+#allpersons li i {
+    cursor:pointer;
+    margin-left:10px;
 }
 
 nav {

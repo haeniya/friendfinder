@@ -1,5 +1,5 @@
 <?php
-
+session_start();
 
 
 /**
@@ -20,8 +20,8 @@ class MainController
     }
     /*Update current Users Position*/
     public function updatePosition($position){
-        $result['success'] = $this->positionRepo->savePosition($position);
-        return json_encode($result);
+        //$result['success'] = $this->positionRepo->savePosition($position);
+       // return json_encode($result);
     }
 
     /*Login user*/
@@ -38,7 +38,13 @@ class MainController
     /*get all friends*/
     public function getFriends(){
         $result = null;
-        return $result;
+        return $this->userRepo->getFriends($_SESSION["userid"]);
+    }
+
+    /*get all open friendrequest*/
+    public function getFriendRequests(){
+        $result = null;
+        return $this->userRepo->getFriendRequests($_SESSION["userid"]);
     }
 
     /**Create new friend request
@@ -52,12 +58,6 @@ class MainController
 
     /*delete friend*/
     public function deleteFriend(){
-        $result = null;
-        return $result;
-    }
-
-    /*get all friend requests*/
-    public function getFriendRequests(){
         $result = null;
         return $result;
     }
@@ -76,7 +76,7 @@ class MainController
 
     /*get user according to prefix, used for search*/
     public function getUsers($prefix){
-        return $this->userRepo->getAllUsers();
+        return $this->userRepo->getUsers($prefix);
     }
 
 }

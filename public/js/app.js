@@ -6,9 +6,25 @@ const MAP_ZOOM = 15;
 var map;
 
 $( document ).ready(function() {
+    if($('#userinfo').text() != ''){
+        switchView('map');
+        getLocation();
+        setInterval(saveCurrentPosition, 20000);
+    }
+
+    $("nav").on("click", "#friendlist", function(event){
+        event.preventDefault();
+        getFriendList();
+    });
+
     $("#login-form").on("click", "#login-btn", function(event){
         event.preventDefault();
         checkLogin({username:$("#form-username").val(), password:$("#form-password").val()});
+    });
+
+    $("header").on("keyup", "#custom-search-input input", function(event){
+        event.preventDefault();
+        searchPeople($(this).val());
     });
 
 
@@ -86,10 +102,16 @@ function createMarker(location, iconUrl){
     new google.maps.Marker(markerOptions);
 }
 
-function appendWhoNode(place){
-    var placesList = $('#restaurants'),
-        restaurant = '<li>'+ place.name +  ', ' + place.vicinity +'</li>';
-    placesList.append(restaurant);
+function appendFriendNode(friend){
+    var friendList = $('#friends ul'),
+        person = '<li>'+ friend.username+'<i class="fa fa-minus-square-o" aria-hidden="true"></i></li>';
+    friendList.append(person);
+}
+
+function appendPersonNode(person){
+    var personList = $('#persons ul'),
+        personCreated = '<li>'+ person.username+'<i class="fa fa-plus-square-o" aria-hidden="true"></i></li>';
+    personList.append(personCreated);
 }
 
 function checkLogin(formData){
@@ -155,5 +177,49 @@ function saveCurrentPosition(){
                 console.error("Failed to update position!");
             }
         }, "json");
+    });
+}
+
+function getFriendList(){
+    $.ajax({
+        url : "restAPI/friends",
+        type: "get",
+        dataType: 'json',
+        success: function(data, textStatus, jqXHR)
+        {
+            $(data).each(function(index){
+                appendFriendNode(data[index]);
+            });
+            switchView('allpersons');
+            //data - response from server
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.log("fail");
+            console.log(textStatus);
+            console.log(errorThrown);
+        }
+    });
+}
+function searchPeople(prefix){
+    $.ajax({
+        url : "restAPI/users/"+prefix,
+        type: "get",
+        dataType: 'json',
+        success: function(data, textStatus, jqXHR)
+        {
+            console.log("success");
+            console.log(data);
+            $('#persons ul').empty();
+            $(data).each(function(index){
+                appendPersonNode(data[index]);
+            });
+           // switchView('friendlist');
+            //data - response from server
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.log("fail");
+            console.log(textStatus);
+            console.log(errorThrown);
+        }
     });
 }
