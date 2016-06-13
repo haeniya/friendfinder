@@ -29,13 +29,13 @@ $app->post('/register', function (Request $request, Response $response) use ($ap
     return $app->controller->register($registerData);
 });
 $app->get('/users/{prefix}', function (Request $request, Response $response) use ($app) {
-
     return $app->controller->getUsers($request->getAttribute('prefix'));
 });
-
+$app->get('/friendsPosition', function() use ($app) {
+    return $app->controller->getFriendsPosition();
+});
 $app->get('/friends', function() use ($app) {
     return $app->controller->getFriends();
-    return "{test}";
 });
 $app->post('/friends/{friend}', function (Request $request, Response $response) use ($app) {
     return $app->controller->deleteFriend($request->getAttribute('friend'));
