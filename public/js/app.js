@@ -10,6 +10,9 @@ $( document ).ready(function() {
         event.preventDefault();
         checkLogin({username:$("#form-username").val(), password:$("#form-password").val()});
     });
+
+
+
     $("#registration-form").on("click", "#register-send-btn", function(event){
         event.preventDefault();
         registerUser({username: $("#form-register-username").val(), firstname: $("#form-first-name").val(), lastname: $("#form-last-name").val(), place: $("#form-place").val(), password: $("#form-register-password").val()} );
@@ -145,6 +148,7 @@ function saveCurrentPosition(){
         var positionData = {lat: position.coords.latitude, lng: position.coords.longitude};
 
         $.post( "restAPI/updatePosition", {position: JSON.stringify(positionData)}, function(data) {
+            console.log(data);
             if(data.success) {
                 console.log("position successfully updated");
             }

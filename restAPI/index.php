@@ -2,13 +2,14 @@
 require '../vendor/autoload.php';
 require '../private/controller/MainController.php';
 require "../private/repositories/UserRepository.php";
+require "../private/repositories/PositionRepository.php";
 require "../private/helpers/database.php";
 use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
 
 header('Content-type:application/json; charset=uft-8');
 $app = new \Slim\App();
-$app->controller = new MainController(new UserRepository(new DatabaseHelper()), new PositionRepository());
+$app->controller = new MainController(new UserRepository(new DatabaseHelper()), new PositionRepository(new DatabaseHelper()));
 $app->get('/', function () use ($app) {
 });
 $app->post('/updatePosition', function (Request $request) use ($app) {

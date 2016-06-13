@@ -9,7 +9,7 @@
 class UserRepository
 {
 
-    var $db;
+    public $db;
 
     function __construct(DatabaseHelper $databaseHelper)
     {
@@ -31,7 +31,6 @@ class UserRepository
     }
 
     function checkLogin($credentials){
-        //TODO: überprüfe Login
         $selection = $this->db->prepare('SELECT * FROM users where username = ? and password = ?');
         $selection->bindValue(1, $credentials['username']);
         $selection->bindValue(2, sha1($credentials['password']));

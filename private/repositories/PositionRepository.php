@@ -1,7 +1,5 @@
 <?php
 
-require "../helpers/database.php";
-
 /**
  * Created by PhpStorm.
  * User: Luecu
@@ -13,9 +11,9 @@ class PositionRepository
 
     public $db;
 
-    function __construct(){
-        $dbHelper = new DatabaseHelper();
-        $this->db = $dbHelper->getDBConnection();
+    function __construct(DatabaseHelper $databaseHelper)
+    {
+        $this->db = $databaseHelper->getDBConnection();
     }
 
     function __destruct(){
