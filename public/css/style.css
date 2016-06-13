@@ -34,12 +34,11 @@ main > section {
 
 #register, #allpersons, #map {
     display: none;
-    min-height: 500px;
     height: -moz-calc(100% - 210px); /* Firefox */
     height: -webkit-calc(100% - 210px); /* Chrome, Safari */
     height: calc(100% - 210px); /* IE9+ and future browsers */
 }
-#login {
+#login, #register {
     height:100%;
 }
 
