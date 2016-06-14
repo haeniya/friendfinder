@@ -93,7 +93,17 @@ $( document ).ready(function() {
 
     $("#registration-form").on("click", "#register-send-btn", function(event){
         event.preventDefault();
-        registerUser({username: $("#form-register-username").val(), firstname: $("#form-first-name").val(), lastname: $("#form-last-name").val(), email: $("#form-email").val(), password: $("#form-register-password").val()} );
+        var validationResult = validateRegisterForm();
+        if (validationResult) {
+            $('#register-alert').hide();
+            registerUser({
+                username: $("#form-register-username").val(),
+                firstname: $("#form-first-name").val(),
+                lastname: $("#form-last-name").val(),
+                email: $("#form-email").val(),
+                password: $("#form-register-password").val()
+            });
+        }
     });
 
 
@@ -118,8 +128,11 @@ function initAutocompleteFriends(){
         $(".js-search-box").autocomplete({
             source: availableTags,
             scroll: true,
-            change: function () {
-                console.log($(this).val());
+            select: function (event, ui) {
+                var index = availableTags.indexOf(ui.item.value);
+                console.log(data[index].lat, data[index].lng);
+                var position = new google.maps.LatLng(data[index].lat, data[index].lng);
+                map.setCenter(position);
             }
         });
     }, 'json');
@@ -131,6 +144,9 @@ function userIsLoggedIn(){
 }
 
 function switchView(viewId){
+    // hide all alerts
+    $('.alert').hide();
+
     $('.tab').hide();
     var searchBox = $('#search');
     if(viewId == 'login' || viewId == 'register'){
@@ -141,7 +157,6 @@ function switchView(viewId){
         searchBox.show();
     }
     if(viewId == 'map'){
-        console.log("map view");
         initAutocompleteFriends();
     }else{
         var searchInput = $(".js-search-box");
@@ -157,7 +172,6 @@ function switchView(viewId){
 
 function getActiveView(){
     var view = $('main').find('section:visible:first').attr('id');
-    console.log(view);
     return view;
 }
 
@@ -257,7 +271,8 @@ function checkLogin(formData){
                 getLocation();
                 setInterval(saveCurrentPosition, 20000);
             } else {
-                $("#login").find(".notification").text("Benutzername oder Passwort falsch");
+                $("#login").find(".alert").text("Benutzername oder Passwort falsch");
+                $("#login").find(".alert").fadeIn();
             }
             console.log(data);
             //data - response from server
@@ -266,6 +281,45 @@ function checkLogin(formData){
             console.log("fail");
         }
     });
+}
+
+function validateRegisterForm() {
+    var errorString = "";
+    if (!$.trim($('#form-register-username').val())) {
+        errorString += "<p>- Bitte geben Sie einen Benutzernamen ein.</p>"
+    }
+    if (!$.trim($('#form-first-name').val())) {
+        errorString += '<p>- Bitte geben Sie einen Vornamen ein.</p>';
+    }
+    if (!$.trim($('#form-last-name').val())) {
+        errorString += "<p>- Bitte geben Sie einen Nachnamen ein.</p>"
+    }
+    if (!$.trim($('#form-email').val())) {
+        errorString += "<p>- Bitte geben Sie ein E-Mail Adresse ein.</p>"
+    } else if (!validateEmail($('#form-email').val())) {
+        errorString += "<p>- Bitte geben Sie eine korrekte Emailadresse ein.</p>"
+    }
+
+    if (!$.trim($('#form-register-password').val())) {
+        errorString += "<p>- Bitte geben Sie ein Passwort ein.</p>"
+    } else if ($('#form-register-password').val() !== $('#form-confirm-pwd').val()) {
+        errorString += "<p>- Die eingegebenen Passwörter stimmen nicht überein.</p>"
+    }
+
+
+    if (errorString !== "") {
+        $('#register-alert').html(errorString);
+        $('#register-alert').show();
+    } else {
+        $('#register-alert').hide();
+    }
+
+    return errorString == "";
+}
+
+function validateEmail(email) {
+    var re = /^(([^<>()\[\]\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(email);
 }
 
 function registerUser(formData){
@@ -436,7 +490,6 @@ function answerFriendRequest(answer, friendID) {
                 $('#allpersons .notification').fadeIn().delay(5000).fadeOut();
                 reloadFriendList();
             }
-
             console.log("worked");
             //$('#friends li[data-friend-id='+friendID+']').remove();
         },
