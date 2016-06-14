@@ -79,10 +79,11 @@ class UserRepository
     /*Gets only users which are neither friends nor in an open friend request*/
     function getUsers($prefix, $userid) {
 
-        $selection = $this->db->prepare('Select username, id from users where username like ? and id NOT IN (Select user2_id from relationships where user1_id = ?) AND id NOT IN (Select user1_id from relationships where user2_id = ?)');
+        $selection = $this->db->prepare('Select username, id from users where username like ? and id NOT IN (Select user2_id from relationships where user1_id = ?) AND id NOT IN (Select user1_id from relationships where user2_id = ?) and id != ?');
         $selection->bindValue(1, $prefix.'%');
         $selection->bindValue(2, $userid);
         $selection->bindValue(3, $userid);
+        $selection->bindValue(4, $userid);
         $selection->execute();
 
         $results = $selection->fetchAll(PDO::FETCH_ASSOC);
