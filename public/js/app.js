@@ -131,15 +131,6 @@ function userIsLoggedIn(){
 
 function switchView(viewId){
     $('.tab').hide();
-    if(viewId == 'map'){
-        console.log("map view");
-        initAutocompleteFriends();
-    }else{
-        if($(".js-search-box").hasClass('ui-autocomplete-input')){
-            console.log("remove autocomplete");
-            $(".js-search-box").autocomplete("destroy");
-        }
-    }
     var searchBox = $('#search');
     if(viewId == 'login' || viewId == 'register'){
         searchBox.hide();
@@ -148,9 +139,25 @@ function switchView(viewId){
         $('nav').show();
         searchBox.show();
     }
+    if(viewId == 'map'){
+        console.log("map view");
+        initAutocompleteFriends();
+    }else{
+        var searchInput = $(".js-search-box");
+        if(searchInput.hasClass('ui-autocomplete-input')){
+            // remove autocomplete
+            searchInput.autocomplete("destroy");
+        }
+    }
     $('nav li.active').removeClass('active');
     $('nav li.' + viewId + '-view').addClass('active');
     $('#' + viewId).show();
+}
+
+function getActiveView(){
+    var view = $('main').find('section:visible:first').attr('id');
+    console.log(view);
+    return view;
 }
 
 function getLocation() {
