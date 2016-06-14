@@ -5,12 +5,10 @@ const MAP_ZOOM = 15;
 var map;
 
 $( document ).ready(function() {
-    if(userIsLoggedIn()){
-        switchView('map');
-        getLocation();
-        setInterval(saveCurrentPosition, 20000);
-    }else{
-        switchView('login');
+
+    switchView('login');
+    if (localStorage.getItem('username')) {
+        checkLogin({username:localStorage.getItem('username'), password:localStorage.getItem('password')})
     }
 
     //Listen to dynamically added route buttons
@@ -266,6 +264,11 @@ function checkLogin(formData){
         success: function(data, textStatus, jqXHR)
         {
             if(data.loginstatus){
+                if ($('#form-remember').is(':checked')) {
+                    localStorage.setItem('username',$("#form-username").val());
+                    localStorage.setItem('password',$('#form-password').val());
+                }
+
                 switchView('map');
                 getLocation();
                 setInterval(saveCurrentPosition, 20000);
@@ -529,6 +532,9 @@ function sendFriendRequest(personID){
 }
 
 function logout(){
+    // clear localStorage
+    localStorage.removeItem('username');
+    localStorage.removeItem('password');
     $.ajax({
         url : "restAPI/logout",
         type: "get",
