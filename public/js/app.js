@@ -258,7 +258,8 @@ function checkLogin(formData){
                 getLocation();
                 setInterval(saveCurrentPosition, 20000);
             } else {
-                $("#login").find(".notification").text("Benutzername oder Passwort falsch");
+                $("#login").find(".alert").text("Benutzername oder Passwort falsch");
+                $("#login").find(".alert").fadeIn();
             }
             console.log(data);
             //data - response from server
