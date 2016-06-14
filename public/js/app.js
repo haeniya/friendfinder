@@ -348,7 +348,6 @@ function registerUser(formData){
 }
 
 function saveCurrentPosition(){
-    console.log("save position");
     navigator.geolocation.getCurrentPosition(function(position){
         var positionData = {lat: position.coords.latitude, lng: position.coords.longitude};
 
@@ -362,7 +361,10 @@ function saveCurrentPosition(){
                 console.error("Failed to update position!");
             }
         }, "json");
+        // reload map
+        loadMap(position);
     });
+
 }
 
 function getFriendList(){
