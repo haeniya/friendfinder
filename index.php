@@ -97,9 +97,9 @@
                                class="form-control" id="form-last-name">
                     </div>
                     <div class="form-group">
-                        <label class="sr-only" for="form-place">Living Place</label>
-                        <input type="text" name="form-place" placeholder="Living Place" class="form-control"
-                               id="form-place">
+                        <label class="sr-only" for="form-email">Email</label>
+                        <input type="text" name="form-email" placeholder="Email" class="form-control"
+                               id="form-email">
                     </div>
                     <div class="form-group">
                         <label class="sr-only" for="form-register-password">Password</label>
