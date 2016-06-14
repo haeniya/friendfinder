@@ -167,8 +167,7 @@ function switchView(viewId){
 }
 
 function getActiveView(){
-    var view = $('main').find('section:visible:first').attr('id');
-    return view;
+    return $('main').find('section:visible:first').attr('id');
 }
 
 function getLocation() {
@@ -337,11 +336,11 @@ function registerUser(formData){
 }
 
 function saveCurrentPosition(){
+    console.log("save position");
     navigator.geolocation.getCurrentPosition(function(position){
         var positionData = {lat: position.coords.latitude, lng: position.coords.longitude};
 
         $.post( "restAPI/updatePosition", {position: JSON.stringify(positionData)}, function(data) {
-            console.log(data);
             if(data.success) {
                 console.log("position successfully updated");
                 var current = $('#userinfo');

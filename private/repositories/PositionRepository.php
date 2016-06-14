@@ -33,7 +33,7 @@ class PositionRepository
             return $statement->rowCount();
         }else{
             //insert new position
-            $sql = 'INSERT INTO positions (`user_id`, `lat`, `lng`, `timestamp`) VALUES('. $user_id .',\''. $position['lat'] .'\', \'' . $position['lng'] . '\', '. $currentTime .')';
+            $sql = 'INSERT INTO positions (`user_id`, `lat`, `lng`, `timestamp`) VALUES('. $user_id .',\''. $position['lat'] .'\', \'' . $position['lng'] . '\', \''. $currentTime .'\')';
             try {
                 $this->db->exec($sql);
                 return 1;
