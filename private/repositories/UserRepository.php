@@ -66,9 +66,9 @@ class UserRepository
         return $resultArray;
     }
 
-    function getUsers($prefix) {
+    function getUsers($prefix, $userID) {
 
-        $selection = $this->db->prepare('SELECT username,id FROM users where username like ?');
+        $selection = $this->db->prepare('SELECT username,id FROM users where username like ? and id != '.$userID.'');
         $selection->bindValue(1, $prefix.'%');
         $selection->execute();
 
