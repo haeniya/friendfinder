@@ -92,7 +92,7 @@ $( document ).ready(function() {
 
     $("#registration-form").on("click", "#register-send-btn", function(event){
         event.preventDefault();
-        registerUser({username: $("#form-register-username").val(), firstname: $("#form-first-name").val(), lastname: $("#form-last-name").val(), place: $("#form-place").val(), password: $("#form-register-password").val()} );
+        registerUser({username: $("#form-register-username").val(), firstname: $("#form-first-name").val(), lastname: $("#form-last-name").val(), email: $("#form-email").val(), password: $("#form-register-password").val()} );
     });
 
 
