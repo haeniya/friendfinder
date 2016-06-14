@@ -5,6 +5,8 @@ const MAP_ZOOM = 15;
 var map;
 
 $( document ).ready(function() {
+    initAutocompleteFriends();
+
     if(userIsLoggedIn()){
         switchView('map');
         getLocation();
@@ -107,6 +109,29 @@ $( document ).ready(function() {
     });
 });
 
+function initAutocompleteFriends(){
+    console.log(getActivePage());
+    $.get("restAPI/friendsPosition", function(data) {
+        console.log(data);
+        var availableTags = [];
+        data.forEach(function(item){
+            availableTags.push(item.firstname + " " + item.lastname);
+        });
+
+        $(".js-search-box").autocomplete({
+            source: availableTags,
+            scroll: true,
+            change: function () {
+                console.log($(this).val());
+            }
+        });
+    }, 'json');
+}
+
+function getActivePage(){
+    return $('main').find('section:visible:first').id;
+}
+
 function userIsLoggedIn(){
     var userId = $('#userinfo').data('info');
     return userId > 0;
@@ -122,6 +147,8 @@ function switchView(viewId){
         $('nav').show();
         searchBox.show();
     }
+    $('nav li.active').removeClass('active');
+    $('nav li.' + viewId + '-view').addClass('active');
     $('#' + viewId).show();
 }
 
@@ -151,7 +178,7 @@ function loadMap(position) {
 }
 
 function searchFriends(){
-    $.get( "restAPI/friendsPosition", function(data) {
+    $.get("restAPI/friendsPosition", function(data) {
         data.forEach(function(item){
             var markerIcon = 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=|FF0000|ffffff',
                 position = new google.maps.LatLng(item.lat, item.lng),

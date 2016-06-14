@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Friend finder</title>
-
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
     <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:400,100,300,500">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
           integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
@@ -23,7 +23,7 @@
     <header id="search">
         <div id="custom-search-input">
             <div class="input-group col-md-12">
-                <input type="text" class="form-control input-lg" placeholder="Search..." />
+                <input type="text" class="form-control input-lg js-search-box" placeholder="Search..." />
                     <span class="input-group-btn">
                         <button class="btn btn-info btn-lg" type="button">
                             <i class="glyphicon glyphicon-search"></i>
@@ -144,13 +144,20 @@
         </div>
     </section>
     <nav class="navbar navbar-default navbar-fixed-bottom">
-        <li><a id="friendlist" data-tab="friendlist" href="#">Find friends | </a></li>
-        <li><a id="logout" data-tab="logout" href="#">Logout | </a></li>
-        <li><a id="showmap" data-tab="showmap" href="#">Go to Map</a></li>
+        <ul class="nav nav-pills nav-justified">
+            <li role="presentation" class="map-view active">
+                <a id="showmap" data-tab="showmap" href="#"><i class="glyphicon glyphicon-map-marker"></i> Go to Map</a>
+            </li>
+            <li role="presentation" class="allpersons-view">
+                <a id="friendlist" data-tab="friendlist" href="#"><i class="glyphicon glyphicon-user"></i> Friend list</a>
+            </li>
+            <li role="presentation"><a id="logout" data-tab="logout" href="#"><i class="glyphicon glyphicon-off"></i> Logout</a></li>
+        </ul>
     </nav>
 </main>
 </body>
 <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
 <script src="public/js/app.js"></script>
 <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?libraries=places&sensor=true&v=3"></script>
 </html>
