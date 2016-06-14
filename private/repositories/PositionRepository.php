@@ -7,7 +7,6 @@
  */
 class PositionRepository
 {
-
     public $db;
 
     function __construct(DatabaseHelper $databaseHelper)
@@ -27,20 +26,15 @@ class PositionRepository
         $results = $selection->fetchAll(PDO::FETCH_ASSOC);
         if(count($results) > 0){
             //update position
-            $sql = 'UPDATE positions SET `lat` = \''. $position['lat'] .'\', `lng` = \'' . $position['lng'] . '\', `timestamp` = \'' . $currentTime . '\' WHERE user_id = '. $user_id;
+            $sql = 'UPDATE positions SET `lat` = \''. $position['lat'] .'\', `lng` = \'' . $position['lng'] . '\', WHERE user_id = '. $user_id;
             $statement = $this->db->prepare($sql);
             $statement->execute();
-            return $statement->rowCount();
+            return 1;
         }else{
             //insert new position
-            $sql = 'INSERT INTO positions (`user_id`, `lat`, `lng`, `timestamp`) VALUES('. $user_id .',\''. $position['lat'] .'\', \'' . $position['lng'] . '\', \''. $currentTime .'\')';
-            try {
-                $this->db->exec($sql);
-                return 1;
-            }
-            catch(PDOException $e) {
-                return 0;
-            }
+            $sql = 'INSERT INTO positions (`user_id`, `lat`, `lng`, `timestamp`) VALUES('. $user_id .',\''. $position['lat'] .'\', \'' . $position['lng'] . '\')';
+            $this->db->exec($sql);
+            return 1;
         }
     }
 
