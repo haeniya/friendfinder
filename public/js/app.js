@@ -8,36 +8,8 @@ $( document ).ready(function() {
 
     switchView('login');
     if (localStorage.getItem('username')) {
-        checkLogin({username:localStorage.getItem('username'), password:localStorage.getItem('password')});
+        checkLogin({username: localStorage.getItem('username'), password: localStorage.getItem('password')});
     }
-
-    //Listen to dynamically added route buttons
-    $(document).on('click', '.route-btn', function(event){
-        // calculate route to this marker
-        var directionsDisplay = new google.maps.DirectionsRenderer();
-        var directionsService = new google.maps.DirectionsService();
-        directionsDisplay.setMap(map);
-        directionsDisplay.setOptions( { suppressMarkers: true } );
-
-        var infoWindow = $(this).closest('.info-window');
-        var currentPosition = $('#userinfo');
-        var start = new google.maps.LatLng(currentPosition.data('lat'), currentPosition.data('lng'));
-        var end = new google.maps.LatLng(infoWindow.data('lat'), infoWindow.data('lng'));
-
-        var request = {
-            origin: start,
-            destination:end,
-            travelMode: google.maps.TravelMode.DRIVING
-        };
-
-        directionsService.route(request, function(result, status) {
-            if (status == google.maps.DirectionsStatus.OK) {
-                infoWindow.find('.distance').text(result.routes[0].legs[0].distance.text);
-                infoWindow.find('.duration').text(result.routes[0].legs[0].duration.text);
-                directionsDisplay.setDirections(result);
-            }
-        });
-    });
 
 });
 
@@ -170,4 +142,34 @@ function reloadFriendList(){
     getOpenRequests();
     getAwaitingRequests();
     getFriendList();
+}
+
+function calculateRouteToMarker(routebutton){
+    // calculate route to this marker
+    var directionsDisplay = new google.maps.DirectionsRenderer();
+    var directionsService = new google.maps.DirectionsService();
+    directionsDisplay.setMap(map);
+    directionsDisplay.setOptions( { suppressMarkers: true } );
+
+    var infoWindow = routebutton.closest('.info-window');
+    var currentPosition = $('#userinfo');
+    var start = new google.maps.LatLng(currentPosition.data('lat'), currentPosition.data('lng'));
+    var end = new google.maps.LatLng(infoWindow.data('lat'), infoWindow.data('lng'));
+
+    var request = {
+        origin: start,
+        destination:end,
+        travelMode: google.maps.TravelMode.DRIVING
+    };
+    displayRoute(directionsService, infoWindow, directionsDisplay);
+}
+
+function displayRoute(directionsService, infoWindow, directionsDisplay){
+    directionsService.route(request, function(result, status) {
+        if (status == google.maps.DirectionsStatus.OK) {
+            infoWindow.find('.distance').text(result.routes[0].legs[0].distance.text);
+            infoWindow.find('.duration').text(result.routes[0].legs[0].duration.text);
+            directionsDisplay.setDirections(result);
+        }
+    });
 }

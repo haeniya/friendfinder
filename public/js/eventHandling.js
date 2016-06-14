@@ -4,14 +4,7 @@ $("nav").on("click", "#friendlist", function(event){
     getAwaitingRequests();
     getFriendList();
 });
-$("#register").on("keyup", "#form-confirm-pwd", function(event){
-    if($(this).val() != $('#form-register-password').val()) {
-        $(this).css("border", "1px solid red");
-    }
-    else {
-        $(this).css("border", "none");
-    }
-});
+
 $("nav").on("click", "#logout", function(event){
     console.log("logotu1");
     event.preventDefault();
@@ -74,4 +67,9 @@ $('#register-btn').on('click', function (event) {
 $('#back-login-btn').on('click', function (event) {
     event.preventDefault();
     switchView('login');
+});
+
+//Listen to dynamically added route buttons
+$(document).on('click', '.route-btn', function(event){
+    calculateRouteToMarker($(this));
 });
