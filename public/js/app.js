@@ -479,7 +479,7 @@ function answerFriendRequest(answer, friendID) {
         dataType: 'json',
         success: function(data, textStatus, jqXHR)
         {
-            if(answer == "accepted"){
+            if(answer == "accept"){
                 $('#allpersons .notification').text("Freundschaftsanfrage wurde akzeptiert!");
                 $('#allpersons .notification').fadeIn().delay(3000).fadeOut();
                 reloadFriendList();
