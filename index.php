@@ -173,7 +173,9 @@
 <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
 <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
 <script src="public/js/app.js"></script>
-<script src="public/js/ajaxRequests.js"></script>
+<script src="public/js/ajaxRequestsFriendList.js"></script>
+<script src="public/js/ajaxRequestsMap.js"></script>
+<script src="public/js/ajaxRequestsUser.js"></script>
 <script src="public/js/eventHandling.js"></script>
 <script src="public/js/validation.js"></script>
 <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?libraries=places&sensor=true&v=3"></script>

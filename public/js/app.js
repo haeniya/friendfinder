@@ -51,7 +51,7 @@ function userIsLoggedIn(){
 function switchView(viewId){
     $('.tab').hide();
     var searchBox = $('#search');
-    SetonlyContentModeEnabled(viewId == 'login' || viewId == 'register');
+    setonlyContentModeEnabled(viewId == 'login' || viewId == 'register');
 
     if(viewId == 'map'){
         initAutocompleteFriends();
@@ -67,7 +67,7 @@ function switchView(viewId){
     $('#' + viewId).show();
 }
 
-function SetonlyContentModeEnabled(isEnabled){
+function setonlyContentModeEnabled(isEnabled){
     var searchBox = $('#search');
     if(isEnabled) {
         searchBox.hide();
