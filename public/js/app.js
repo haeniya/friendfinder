@@ -144,9 +144,6 @@ function userIsLoggedIn(){
 }
 
 function switchView(viewId){
-    // hide all alerts
-    $('.alert').hide();
-
     $('.tab').hide();
     var searchBox = $('#search');
     if(viewId == 'login' || viewId == 'register'){
@@ -271,7 +268,7 @@ function checkLogin(formData){
                 setInterval(saveCurrentPosition, 20000);
             } else {
                 $("#login").find(".alert").text("Benutzername oder Passwort falsch");
-                $("#login").find(".alert").fadeIn();
+                $("#login").find(".alert").fadeIn().delay(3000).fadeOut();
             }
             console.log(data);
             //data - response from server
@@ -331,15 +328,18 @@ function registerUser(formData){
         success: function(data, textStatus, jqXHR)
         {
             if(data.registerstatus){
+                $('#login').find('.alert').text("Registrierung war erfolgreich");
+                $('#login').find('.alert').fadeIn().delay(3000).fadeOut();
                 switchView('login');
             }
             else {
-                $("#register").find(".notification").text("Etwas ist schiefgelaufen");
+                $("#register").find(".alert").text("Etwas ist schiefgelaufen");
             }
             console.log(data);
             //data - response from server
         },
         error: function (jqXHR, textStatus, errorThrown) {
+            $("#register").find(".alert").text("Etwas ist schiefgelaufen");
             console.log("fail");
             console.log(textStatus);
             console.log(errorThrown);
@@ -461,7 +461,7 @@ function deleteFriend(friendID){
         {
             console.log("friend deleted");
             $('#allpersons .notification').text("Freund erfolgreich gelöscht!");
-            $('#allpersons .notification').fadeIn().delay(5000).fadeOut();
+            $('#allpersons .notification').fadeIn().delay(3000).fadeOut();
             $('#friends li[data-friend-id='+friendID+']').remove();
         },
         error: function (jqXHR, textStatus, errorThrown) {
@@ -479,14 +479,14 @@ function answerFriendRequest(answer, friendID) {
         dataType: 'json',
         success: function(data, textStatus, jqXHR)
         {
-            if(answer == "accepted"){
+            if(answer == "accept"){
                 $('#allpersons .notification').text("Freundschaftsanfrage wurde akzeptiert!");
-                $('#allpersons .notification').fadeIn().delay(5000).fadeOut();
+                $('#allpersons .notification').fadeIn().delay(3000).fadeOut();
                 reloadFriendList();
             }
             else {
                 $('#allpersons .notification').text("Freundschaftsanfrage wurde abgelehnt!");
-                $('#allpersons .notification').fadeIn().delay(5000).fadeOut();
+                $('#allpersons .notification').fadeIn().delay(3000).fadeOut();
                 reloadFriendList();
             }
             console.log("worked");
@@ -508,7 +508,7 @@ function sendFriendRequest(personID){
         {
             console.log("worked");
             $('#allpersons .notification').text("Freundschaftsanfrage wurde erfolgreich gesendet!");
-            $('#allpersons .notification').fadeIn().delay(5000).fadeOut();
+            $('#allpersons .notification').fadeIn().delay(3000).fadeOut();
             reloadFriendList();
             //$('#friends li[data-friend-id='+friendID+']').remove();
         },
