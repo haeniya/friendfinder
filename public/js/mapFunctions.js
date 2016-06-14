@@ -15,10 +15,10 @@ function calculateRouteToMarker(routebutton){
         destination:end,
         travelMode: google.maps.TravelMode.DRIVING
     };
-    displayRoute(directionsService, infoWindow, directionsDisplay);
+    displayRoute(directionsService, infoWindow, directionsDisplay, request);
 }
 
-function displayRoute(directionsService, infoWindow, directionsDisplay){
+function displayRoute(directionsService, infoWindow, directionsDisplay, request){
     directionsService.route(request, function(result, status) {
         if (status == google.maps.DirectionsStatus.OK) {
             infoWindow.find('.distance').text(result.routes[0].legs[0].distance.text);

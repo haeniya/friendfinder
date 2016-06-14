@@ -1,4 +1,6 @@
-
+/**
+ * Call SLIM-API to get all friends
+ */
 function getFriendList(){
     $.ajax({
         url : "restAPI/friends",
@@ -11,14 +13,14 @@ function getFriendList(){
                 appendFriendNode(data[index]);
             });
             switchView('allpersons');
-            //data - response from server
-        },
-        error: function (jqXHR, textStatus, errorThrown) {
-
         }
     });
 }
 
+/**
+ * Call SLIM-API to get all users for search on friendlist
+ * @param prefix
+ */
 function searchPeople(prefix){
     $.ajax({
         url : "restAPI/users/"+prefix,
@@ -30,14 +32,13 @@ function searchPeople(prefix){
             $(data).each(function(index){
                 appendPersonNode(data[index]);
             });
-            // switchView('friendlist');
-            //data - response from server
-        },
-        error: function (jqXHR, textStatus, errorThrown) {
-
         }
     });
 }
+
+/**
+ * Call SLIM-API to get all open friend requests
+ */
 function getOpenRequests(){
     $.ajax({
         url : "restAPI/FriendRequests",
@@ -50,13 +51,13 @@ function getOpenRequests(){
                 appendFriendRequestNode(data[index]);
             });
             switchView('allpersons');
-            //data - response from server
-        },
-        error: function (jqXHR, textStatus, errorThrown) {
-
         }
     });
 }
+
+/**
+ * Call SLIM-API to get all friend request waiting for answer
+ */
 function getAwaitingRequests(){
     $.ajax({
         url : "restAPI/FriendRequests/awaiting",
@@ -69,13 +70,14 @@ function getAwaitingRequests(){
                 appendAwaitingFriendRequestNode(data[index]);
             });
             switchView('allpersons');
-            //data - response from server
-        },
-        error: function (jqXHR, textStatus, errorThrown) {
-
         }
     });
 }
+
+/**
+ * Call SLIM-API to delete Friend from FriendList
+ * @param friendID: ID of Friend to delete
+ */
 function deleteFriend(friendID){
     $.ajax({
         url : "restAPI/friends/"+friendID,
@@ -86,11 +88,15 @@ function deleteFriend(friendID){
             $('#allpersons .notification').text("Freund erfolgreich gelöscht!");
             $('#allpersons .notification').fadeIn().delay(3000).fadeOut();
             $('#friends li[data-friend-id='+friendID+']').remove();
-        },
-        error: function (jqXHR, textStatus, errorThrown) {
         }
     });
 }
+
+/**
+ * Call SLIM-API to get accept or decline a friend request
+ * @param answer: accept or decline
+ * @param friendID: ID of Friend
+ */
 function answerFriendRequest(answer, friendID) {
     $.ajax({
         url : "restAPI/FriendRequests/"+answer+"/"+friendID,
@@ -108,12 +114,14 @@ function answerFriendRequest(answer, friendID) {
                 $('#allpersons .notification').fadeIn().delay(3000).fadeOut();
                 reloadFriendList();
             }
-            //$('#friends li[data-friend-id='+friendID+']').remove();
-        },
-        error: function (jqXHR, textStatus, errorThrown) {
         }
     });
 }
+
+/**
+ * Call SLIM-API to send a friend request
+ * @param personID: Person to send friend request to
+ */
 function sendFriendRequest(personID){
     $.ajax({
         url : "restAPI/FriendRequests/new/" +personID,
@@ -124,9 +132,6 @@ function sendFriendRequest(personID){
             $('#allpersons .notification').text("Freundschaftsanfrage wurde erfolgreich gesendet!");
             $('#allpersons .notification').fadeIn().delay(3000).fadeOut();
             reloadFriendList();
-            //$('#friends li[data-friend-id='+friendID+']').remove();
-        },
-        error: function (jqXHR, textStatus, errorThrown) {
         }
     });
 }
