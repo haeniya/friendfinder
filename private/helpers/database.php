@@ -7,8 +7,8 @@
  */
 
 const connectionString = "mysql:host=localhost;dbname=friendfinder";
-const user = "friendfinder";
-const pwd = "ScdOmuPj";
+const user = "root";
+const pwd = "";
 
 class DatabaseHelper {
 
