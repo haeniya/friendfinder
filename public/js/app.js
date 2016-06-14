@@ -140,6 +140,9 @@ function userIsLoggedIn(){
 }
 
 function switchView(viewId){
+    // hide all alerts
+    $('.alert').hide();
+
     $('.tab').hide();
     var searchBox = $('#search');
     if(viewId == 'login' || viewId == 'register'){
