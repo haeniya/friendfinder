@@ -371,7 +371,7 @@ function saveCurrentPosition(){
             }
         }, "json");
         // reload map
-        loadMap(position);
+        //loadMap(position);
     });
 
 }
