@@ -144,9 +144,6 @@ function userIsLoggedIn(){
 }
 
 function switchView(viewId){
-    // hide all alerts
-    $('.alert').hide();
-
     $('.tab').hide();
     var searchBox = $('#search');
     if(viewId == 'login' || viewId == 'register'){
@@ -462,7 +459,7 @@ function deleteFriend(friendID){
         {
             console.log("friend deleted");
             $('#allpersons .notification').text("Freund erfolgreich gelöscht!");
-            $('#allpersons .notification').fadeIn().delay(5000).fadeOut();
+            $('#allpersons .notification').fadeIn().delay(3000).fadeOut();
             $('#friends li[data-friend-id='+friendID+']').remove();
         },
         error: function (jqXHR, textStatus, errorThrown) {
@@ -482,12 +479,12 @@ function answerFriendRequest(answer, friendID) {
         {
             if(answer == "accepted"){
                 $('#allpersons .notification').text("Freundschaftsanfrage wurde akzeptiert!");
-                $('#allpersons .notification').fadeIn().delay(5000).fadeOut();
+                $('#allpersons .notification').fadeIn().delay(3000).fadeOut();
                 reloadFriendList();
             }
             else {
                 $('#allpersons .notification').text("Freundschaftsanfrage wurde abgelehnt!");
-                $('#allpersons .notification').fadeIn().delay(5000).fadeOut();
+                $('#allpersons .notification').fadeIn().delay(3000).fadeOut();
                 reloadFriendList();
             }
             console.log("worked");
@@ -509,7 +506,7 @@ function sendFriendRequest(personID){
         {
             console.log("worked");
             $('#allpersons .notification').text("Freundschaftsanfrage wurde erfolgreich gesendet!");
-            $('#allpersons .notification').fadeIn().delay(5000).fadeOut();
+            $('#allpersons .notification').fadeIn().delay(3000).fadeOut();
             reloadFriendList();
             //$('#friends li[data-friend-id='+friendID+']').remove();
         },
