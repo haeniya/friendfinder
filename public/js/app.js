@@ -117,8 +117,11 @@ function initAutocompleteFriends(){
         $(".js-search-box").autocomplete({
             source: availableTags,
             scroll: true,
-            change: function () {
-                console.log($(this).val());
+            select: function (event, ui) {
+                var index = availableTags.indexOf(ui.item.value);
+                console.log(data[index].lat, data[index].lng);
+                var position = new google.maps.LatLng(data[index].lat, data[index].lng);
+                map.setCenter(position);
             }
         });
     }, 'json');
@@ -140,7 +143,6 @@ function switchView(viewId){
         searchBox.show();
     }
     if(viewId == 'map'){
-        console.log("map view");
         initAutocompleteFriends();
     }else{
         var searchInput = $(".js-search-box");
@@ -156,7 +158,6 @@ function switchView(viewId){
 
 function getActiveView(){
     var view = $('main').find('section:visible:first').attr('id');
-    console.log(view);
     return view;
 }
 
