@@ -1,3 +1,7 @@
+/**
+ * Call SLIM-API to validate user login
+ * @param formData
+ */
 function checkLogin(formData){
     $.ajax({
         url : "restAPI/login",
@@ -18,13 +22,13 @@ function checkLogin(formData){
                 $("#login").find(".alert").text("Benutzername oder Passwort falsch");
                 $("#login").find(".alert").fadeIn().delay(3000).fadeOut();
             }
-        },
-        error: function (jqXHR, textStatus, errorThrown) {
-
         }
     });
 }
 
+/**
+ * Call SLIM-API to logout user
+ */
 function logout(){
     // clear localStorage
     localStorage.removeItem('username');
@@ -37,13 +41,15 @@ function logout(){
         {
             switchView('login');
             location.reload();
-        },
-        error: function (jqXHR, textStatus, errorThrown) {
         }
     });
     location.reload();
-
 }
+
+/**
+ * Call SLIM-API to register new user
+ * @param formData: Data of Register-Form
+ */
 
 function registerUser(formData){
     $.ajax({

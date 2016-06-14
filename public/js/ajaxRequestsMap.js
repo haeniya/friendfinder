@@ -1,6 +1,5 @@
 /**
- * This function saves the current position of the client to the database.
- *
+ * Call SLIM-API to save current Position
  */
 function saveCurrentPosition(){
     navigator.geolocation.getCurrentPosition(function(position){
@@ -17,6 +16,9 @@ function saveCurrentPosition(){
     });
 }
 
+/**
+ * Call SLIM-API to get all friends Positions and initialize the autocomplete search on map
+ */
 function initAutocompleteFriends(){
     $.get("restAPI/friendsPosition", function(data) {
         var availableTags = [];
@@ -35,6 +37,10 @@ function initAutocompleteFriends(){
         });
     }, 'json');
 }
+
+/**
+ * Call SLIM-API to get all friends to show on map
+ */
 function searchFriends(){
     $.get("restAPI/friendsPosition", function(data) {
         data.forEach(function(item){

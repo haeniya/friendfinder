@@ -19,16 +19,10 @@ function calculateRouteToMarker(routebutton){
         destination:end,
         travelMode: google.maps.TravelMode.DRIVING
     };
-    displayRoute(directionsService, infoWindow, directionsDisplay);
+    displayRoute(directionsService, infoWindow, directionsDisplay, request);
 }
 
-/**
- * This function draws the route on the map and shows the distance and the travel duration.
- * @param directionsService API Service to calculate the route
- * @param infoWindow Info window to display the duration and distance
- * @param directionsDisplay Used to display the route
- */
-function displayRoute(directionsService, infoWindow, directionsDisplay){
+function displayRoute(directionsService, infoWindow, directionsDisplay, request){
     directionsService.route(request, function(result, status) {
         if (status == google.maps.DirectionsStatus.OK) {
             infoWindow.find('.distance').text(result.routes[0].legs[0].distance.text);

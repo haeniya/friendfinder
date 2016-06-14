@@ -1,6 +1,9 @@
 /**
  * Gets the data for the friend list.
  */
+/**
+ * Call SLIM-API to get all friends
+ */
 function getFriendList(){
     $.ajax({
         url : "restAPI/friends",
@@ -13,17 +16,13 @@ function getFriendList(){
                 appendFriendNode(data[index]);
             });
             switchView('allpersons');
-            //data - response from server
-        },
-        error: function (jqXHR, textStatus, errorThrown) {
-
         }
     });
 }
 
 /**
- * Retrieves all people with a username containing a specific prefix.
- * @param prefix Prefix that the user entered in the search box.
+ * Call SLIM-API to get all users for search on friendlist
+ * @param prefix
  */
 function searchPeople(prefix){
     $.ajax({
@@ -36,17 +35,12 @@ function searchPeople(prefix){
             $(data).each(function(index){
                 appendPersonNode(data[index]);
             });
-            // switchView('friendlist');
-            //data - response from server
-        },
-        error: function (jqXHR, textStatus, errorThrown) {
-
         }
     });
 }
 
 /**
- * Retrieves all open requests and appends them to the list.
+ * Call SLIM-API to get all open friend requests
  */
 function getOpenRequests(){
     $.ajax({
@@ -60,16 +54,12 @@ function getOpenRequests(){
                 appendFriendRequestNode(data[index]);
             });
             switchView('allpersons');
-            //data - response from server
-        },
-        error: function (jqXHR, textStatus, errorThrown) {
-
         }
     });
 }
 
 /**
- * Retrieves all open requests and adds them to the appropriate list.
+ * Call SLIM-API to get all friend request waiting for answer
  */
 function getAwaitingRequests(){
     $.ajax({
@@ -83,16 +73,13 @@ function getAwaitingRequests(){
                 appendAwaitingFriendRequestNode(data[index]);
             });
             switchView('allpersons');
-            //data - response from server
-        },
-        error: function (jqXHR, textStatus, errorThrown) {
-
         }
     });
 }
+
 /**
- * This function deletes a specific friend from the current user.
- * @param friendID Id of the friend to be removed.
+ * Call SLIM-API to delete Friend from FriendList
+ * @param friendID: ID of Friend to delete
  */
 function deleteFriend(friendID){
     $.ajax({
@@ -104,15 +91,14 @@ function deleteFriend(friendID){
             $('#allpersons .notification').text("Freund erfolgreich gelöscht!");
             $('#allpersons .notification').fadeIn().delay(3000).fadeOut();
             $('#friends li[data-friend-id='+friendID+']').remove();
-        },
-        error: function (jqXHR, textStatus, errorThrown) {
         }
     });
 }
+
 /**
- * Answers a friend request.
- * @param answer Answer of the user (accept/decline)
- * @param friendID User id of the user who sent the request.
+ * Call SLIM-API to get accept or decline a friend request
+ * @param answer: accept or decline
+ * @param friendID: ID of Friend
  */
 function answerFriendRequest(answer, friendID) {
     $.ajax({
@@ -131,15 +117,13 @@ function answerFriendRequest(answer, friendID) {
                 $('#allpersons .notification').fadeIn().delay(3000).fadeOut();
                 reloadFriendList();
             }
-            //$('#friends li[data-friend-id='+friendID+']').remove();
-        },
-        error: function (jqXHR, textStatus, errorThrown) {
         }
     });
 }
+
 /**
- * Sends a friend request to a user.
- * @param personID User id of the future friend.
+ * Call SLIM-API to send a friend request
+ * @param personID: Person to send friend request to
  */
 function sendFriendRequest(personID){
     $.ajax({
@@ -151,9 +135,6 @@ function sendFriendRequest(personID){
             $('#allpersons .notification').text("Freundschaftsanfrage wurde erfolgreich gesendet!");
             $('#allpersons .notification').fadeIn().delay(3000).fadeOut();
             reloadFriendList();
-            //$('#friends li[data-friend-id='+friendID+']').remove();
-        },
-        error: function (jqXHR, textStatus, errorThrown) {
         }
     });
 }
