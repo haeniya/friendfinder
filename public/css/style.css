@@ -163,3 +163,10 @@ nav li {
     color: #ffffff;
     background-color: #19b9e7;
 }
+
+input:required:invalid, input:focus:invalid {
+    border: 1px solid red;
+}
+input:required:valid {
+    border: default;
+}
