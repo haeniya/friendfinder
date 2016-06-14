@@ -79,10 +79,11 @@ class UserRepository
     /*Gets only users which are neither friends nor in an open friend request*/
     function getUsers($prefix, $userid) {
 
-        $selection = $this->db->prepare('Select username, id from users where username like ? and id NOT IN (Select user2_id from relationships where user1_id = ?) AND id NOT IN (Select user1_id from relationships where user2_id = ?)');
+        $selection = $this->db->prepare('Select username, id from users where username like ? and id NOT IN (Select user2_id from relationships where user1_id = ?) AND id NOT IN (Select user1_id from relationships where user2_id = ?) and id != ?');
         $selection->bindValue(1, $prefix.'%');
         $selection->bindValue(2, $userid);
         $selection->bindValue(3, $userid);
+        $selection->bindValue(4, $userid);
         $selection->execute();
 
         $results = $selection->fetchAll(PDO::FETCH_ASSOC);
@@ -121,10 +122,11 @@ class UserRepository
     }
 
     function register($data) {
-        $selection = $this->db->prepare('INSERT INTO users (firstname, lastname, username, password, email) VALUES (:firstname, :lastname, :username, :password, :email)');
+        $selection = $this->db->prepare('INSERT INTO users (firstname, lastname, username, livingplace, password, email) VALUES (:firstname, :lastname, :username, :livingplace, :password, :email)');
         $selection->bindParam(':firstname', $data['firstname']);
         $selection->bindParam(':lastname', $data['lastname']);
         $selection->bindParam(':username', $data['username']);
+        $selection->bindParam(':livingplace', $data['livingplace']);
         $selection->bindParam(':password', sha1($data['password']));
         $selection->bindParam(':email', $data['email']);
         $selection->execute();

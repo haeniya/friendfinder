@@ -100,6 +100,11 @@
                                class="form-control" id="form-last-name" required>
                     </div>
                     <div class="form-group">
+                        <label class="sr-only" for="form-living-place">Last name</label>
+                        <input type="text" name="form-living-place" placeholder="Living place"
+                               class="form-control" id="form-living-place" required>
+                    </div>
+                    <div class="form-group">
                         <label class="sr-only" for="form-email">Email</label>
                         <input type="email" name="form-email" placeholder="Email" class="form-control"
                                id="form-email" required>
