@@ -11,196 +11,82 @@ $( document ).ready(function() {
         checkLogin({username: localStorage.getItem('username'), password: localStorage.getItem('password')});
     }
 
+    $("nav").on("click", "#friendlist", function(event){
+        event.preventDefault();
+        getOpenRequests();
+        getAwaitingRequests();
+        getFriendList();
+    });
+
+    $("nav").on("click", "#logout", function(event){
+        console.log("logotu1");
+        event.preventDefault();
+        logout();
+    });
+    $("nav").on("click", "#showmap", function(event){
+        event.preventDefault();
+        switchView("map");
+    });
+
+    $("#login-form").on("click", "#login-btn", function(event){
+        event.preventDefault();
+        checkLogin({username:$("#form-username").val(), password:$("#form-password").val()});
+    });
+
+    $("#friendrequests").on("click", ".accept", function(event){
+        event.preventDefault();
+        answerFriendRequest("accept",$(this).parent().data("person-id"));
+    });
+    $("#friendrequests").on("click", ".decline", function(event){
+        event.preventDefault();
+        answerFriendRequest("decline", $(this).parent().data("person-id"));
+    });
+    $("#friends").on("click", ".delete", function(event){
+        event.preventDefault();
+        deleteFriend($(this).parent().data("friend-id"));
+    });
+    $("#persons").on("click", ".add", function(event){
+        event.preventDefault();
+        sendFriendRequest($(this).parent().data("person-id"));
+    });
+
+    $("header").on("keyup", "#custom-search-input input", function(event){
+        event.preventDefault();
+        searchPeople($(this).val());
+    });
+
+    $("#registration-form").on("click", "#register-send-btn", function(event){
+        event.preventDefault();
+        var validationResult = validateRegisterForm();
+        if (validationResult) {
+            $('#register-alert').hide();
+            registerUser({
+                username: $("#form-register-username").val(),
+                firstname: $("#form-first-name").val(),
+                lastname: $("#form-last-name").val(),
+                livingplace: $('#form-living-place').val(),
+                email: $("#form-email").val(),
+                password: $("#form-register-password").val()
+            });
+        }
+    });
+
+
+    $('#register-btn').on('click', function (event) {
+        event.preventDefault();
+        switchView('register');
+    });
+
+    $('#back-login-btn').on('click', function (event) {
+        event.preventDefault();
+        switchView('login');
+    });
+
+//Listen to dynamically added route buttons
+    $(document).on('click', '.route-btn', function(event){
+        calculateRouteToMarker($(this));
+    });
+
 });
 
-/**
- * This method checks if a user is logged in and returns true or false accordingly.
- * @returns {boolean}
- */
-function userIsLoggedIn(){
-    var userId = $('#userinfo').data('info');
-    return userId > 0;
-}
 
-/**
- * This function switches between the different views of the single page application.
- * @param viewId id of the view/section which should be shown.
- */
-function switchView(viewId){
-    $('.tab').hide();
-    toggleSiteElements(viewId == 'login' || viewId == 'register');
-    handleAutoComplete(viewId);
-    $('nav li.active').removeClass('active');
-    $('nav li.' + viewId + '-view').addClass('active');
-    $('#' + viewId).show();
-}
-
-/**
- * This function toggles (show/hide) the navigation and search box depending on the active view.
- * @param isLoginPage if the active view is register or login the search box and navigation are hidden.
- */
-function toggleSiteElements(isLoginPage){
-    var searchBox = $('#search');
-    if(isLoginPage) {
-        searchBox.hide();
-        $('nav').hide();
-    }else{
-        $('nav').show();
-        searchBox.show();
-    }
-}
-
-/**
- * This function handles the auto-complete function of the search box.
- * @param viewId active view
- */
-function handleAutoComplete(viewId){
-    if(viewId == 'map'){
-        initAutocompleteFriends();
-    }else{
-        var searchInput = $(".js-search-box");
-        if(searchInput.hasClass('ui-autocomplete-input')){
-            // remove auto-complete from search input field
-            searchInput.autocomplete("destroy");
-        }
-    }
-}
-
-/**
- * This function gets the current active view and returns the id.
- * @returns id of the current active view
- */
-function getActiveView(){
-    return $('main').find('section:visible:first').attr('id');
-}
-
-/**
- * This function gets the current location of the client and loads the map.
- * If geo locations are not supported an error is shown to the console.
- */
-function getLocation() {
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(loadMap);
-    } else {
-        console.error("Geo location not supported by this browser.");
-    }
-}
-
-/**
- * This function loads and shows the map with all markers.
- * @param position current position of the client.
- */
-function loadMap(position) {
-    var here = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-    var mapOptions = { center: here, zoom: MAP_ZOOM},
-        currentPosition = $('#userinfo');
-
-    map = new google.maps.Map(document.getElementById('map'), mapOptions);
-    var markerIcon = 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=P|0000FF|ffffff',
-        tooltipData = '<div id="current-pos" class="info-window">Your Position</div>',
-        infoWindow = new google.maps.InfoWindow({
-            content: tooltipData
-        });
-    currentPosition.data('lat', position.coords.latitude);
-    currentPosition.data('lng', position.coords.longitude);
-    createMarker(here, markerIcon, infoWindow);
-    searchFriends();
-}
-
-/**
- * This function creates a marker at a specific location on the map.
- * @param location location of the new marker
- * @param iconUrl icon of the marker
- * @param infoWindow info window which is added to the marker.
- */
-function createMarker(location, iconUrl, infoWindow){
-    var markerOptions = {
-        map: map,
-        position: location,
-        icon: iconUrl
-    };
-    var marker = new google.maps.Marker(markerOptions);
-    google.maps.event.addListener(marker, 'click', function() {
-        infoWindow.open(map, marker);
-    });
-}
-
-/**
- * This function adds a friend node to the friend list.
- * @param friend
- */
-function appendFriendNode(friend){
-    var friendList = $('#friends ul'),
-        person = '<li data-friend-id='+friend.id+'>'+ friend.username+'<i class="fa fa-minus-square-o delete" aria-hidden="true"></i></li>';
-    friendList.append(person);
-}
-
-/**
- * This function appends a person node to the person list.
- * @param person person object
- */
-function appendPersonNode(person){
-    var personList = $('#persons ul'),
-        personCreated = '<li data-person-id='+person.id+'>'+ person.username+'<i class="fa fa-plus-square-o add" aria-hidden="true"></i></li>';
-    personList.append(personCreated);
-}
-
-/**
- * This method appends an open friend request to the corresponding list.
- * @param person Person object
- */
-function appendAwaitingFriendRequestNode(person){
-    var personList = $('#awaitingfriendrequests ul'),
-        personCreated = '<li data-person-id='+person.id+'>'+ person.username+'</li>';
-    personList.append(personCreated);
-}
-
-/**
- * This method adds a friend request node to the list.
- * @param person Person object
- */
-function appendFriendRequestNode(person){
-    var personList = $('#friendrequests ul'),
-        personCreated = '<li data-person-id='+person.id+'>'+ person.username+'<i class="fa fa-plus-square-o accept" aria-hidden="true"></i><i class="fa fa-minus-square-o decline" aria-hidden="true"></i></li>';
-    personList.append(personCreated);
-}
-
-/**
- * This method reloads the friend list.
- */
-function reloadFriendList(){
-    $('#persons ul').empty();
-    getOpenRequests();
-    getAwaitingRequests();
-    getFriendList();
-}
-
-function calculateRouteToMarker(routebutton){
-    // calculate route to this marker
-    var directionsDisplay = new google.maps.DirectionsRenderer();
-    var directionsService = new google.maps.DirectionsService();
-    directionsDisplay.setMap(map);
-    directionsDisplay.setOptions( { suppressMarkers: true } );
-
-    var infoWindow = routebutton.closest('.info-window');
-    var currentPosition = $('#userinfo');
-    var start = new google.maps.LatLng(currentPosition.data('lat'), currentPosition.data('lng'));
-    var end = new google.maps.LatLng(infoWindow.data('lat'), infoWindow.data('lng'));
-
-    var request = {
-        origin: start,
-        destination:end,
-        travelMode: google.maps.TravelMode.DRIVING
-    };
-    displayRoute(directionsService, infoWindow, directionsDisplay);
-}
-
-function displayRoute(directionsService, infoWindow, directionsDisplay){
-    directionsService.route(request, function(result, status) {
-        if (status == google.maps.DirectionsStatus.OK) {
-            infoWindow.find('.distance').text(result.routes[0].legs[0].distance.text);
-            infoWindow.find('.duration').text(result.routes[0].legs[0].duration.text);
-            directionsDisplay.setDirections(result);
-        }
-    });
-}

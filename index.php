@@ -176,7 +176,8 @@
 <script src="public/js/ajaxRequestsFriendList.js"></script>
 <script src="public/js/ajaxRequestsMap.js"></script>
 <script src="public/js/ajaxRequestsUser.js"></script>
-<script src="public/js/eventHandling.js"></script>
-<script src="public/js/validation.js"></script>
+<script src="public/js/mapFunctions.js"></script>
+<script src="public/js/pageHandling.js"></script>
+<script src="public/js/validations.js"></script>
 <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?libraries=places&sensor=true&v=3"></script>
 </html>
