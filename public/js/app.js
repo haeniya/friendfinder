@@ -13,6 +13,10 @@ $( document ).ready(function() {
 
 });
 
+/**
+ * This method checks if a user is logged in and returns true or false accordingly.
+ * @returns {boolean}
+ */
 function userIsLoggedIn(){
     var userId = $('#userinfo').data('info');
     return userId > 0;
@@ -70,6 +74,10 @@ function getActiveView(){
     return $('main').find('section:visible:first').attr('id');
 }
 
+/**
+ * This function gets the current location of the client and loads the map.
+ * If geo locations are not supported an error is shown to the console.
+ */
 function getLocation() {
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(loadMap);
@@ -78,6 +86,10 @@ function getLocation() {
     }
 }
 
+/**
+ * This function loads and shows the map with all markers.
+ * @param position current position of the client.
+ */
 function loadMap(position) {
     var here = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
     var mapOptions = { center: here, zoom: MAP_ZOOM},
@@ -95,8 +107,12 @@ function loadMap(position) {
     searchFriends();
 }
 
-
-
+/**
+ * This function creates a marker at a specific location on the map.
+ * @param location location of the new marker
+ * @param iconUrl icon of the marker
+ * @param infoWindow info window which is added to the marker.
+ */
 function createMarker(location, iconUrl, infoWindow){
     var markerOptions = {
         map: map,
@@ -109,34 +125,49 @@ function createMarker(location, iconUrl, infoWindow){
     });
 }
 
+/**
+ * This function adds a friend node to the friend list.
+ * @param friend
+ */
 function appendFriendNode(friend){
     var friendList = $('#friends ul'),
         person = '<li data-friend-id='+friend.id+'>'+ friend.username+'<i class="fa fa-minus-square-o delete" aria-hidden="true"></i></li>';
     friendList.append(person);
 }
 
+/**
+ * This function appends a person node to the person list.
+ * @param person person object
+ */
 function appendPersonNode(person){
     var personList = $('#persons ul'),
         personCreated = '<li data-person-id='+person.id+'>'+ person.username+'<i class="fa fa-plus-square-o add" aria-hidden="true"></i></li>';
     personList.append(personCreated);
 }
 
-
+/**
+ * This method appends an open friend request to the corresponding list.
+ * @param person Person object
+ */
 function appendAwaitingFriendRequestNode(person){
     var personList = $('#awaitingfriendrequests ul'),
         personCreated = '<li data-person-id='+person.id+'>'+ person.username+'</li>';
     personList.append(personCreated);
 }
 
-
+/**
+ * This method adds a friend request node to the list.
+ * @param person Person object
+ */
 function appendFriendRequestNode(person){
     var personList = $('#friendrequests ul'),
         personCreated = '<li data-person-id='+person.id+'>'+ person.username+'<i class="fa fa-plus-square-o accept" aria-hidden="true"></i><i class="fa fa-minus-square-o decline" aria-hidden="true"></i></li>';
     personList.append(personCreated);
 }
 
-
-
+/**
+ * This method reloads the friend list.
+ */
 function reloadFriendList(){
     $('#persons ul').empty();
     getOpenRequests();
