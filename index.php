@@ -87,32 +87,32 @@
                     <div class="form-group">
                         <label class="sr-only" for="form-register-username">Username</label>
                         <input type="text" name="form-register-username" placeholder="Username"
-                               class="form-control" id="form-register-username">
+                               class="form-control" id="form-register-username" required>
                     </div>
                     <div class="form-group">
                         <label class="sr-only" for="form-first-name">First name</label>
                         <input type="text" name="form-first-name" placeholder="First name"
-                               class="form-control" id="form-first-name">
+                               class="form-control" id="form-first-name" required>
                     </div>
                     <div class="form-group">
                         <label class="sr-only" for="form-last-name">Last name</label>
                         <input type="text" name="form-last-name" placeholder="Last name"
-                               class="form-control" id="form-last-name">
+                               class="form-control" id="form-last-name" required>
                     </div>
                     <div class="form-group">
                         <label class="sr-only" for="form-email">Email</label>
-                        <input type="text" name="form-email" placeholder="Email" class="form-control"
-                               id="form-email">
+                        <input type="email" name="form-email" placeholder="Email" class="form-control"
+                               id="form-email" required>
                     </div>
                     <div class="form-group">
                         <label class="sr-only" for="form-register-password">Password</label>
                         <input type="password" name="form-register-password" placeholder="Password" class="form-control"
-                               id="form-register-password">
+                               id="form-register-password" required>
                     </div>
                     <div class="form-group">
                         <label class="sr-only" for="form-confirm-pwd">Password confirm</label>
                         <input type="password" name="form-confirm-pwd" placeholder="Confirm password" class="form-control"
-                               id="form-confirm-pwd">
+                               id="form-confirm-pwd" required>
                     </div>
                     <button id="register-send-btn" type="submit" class="btn">Register</button>
                     <button id="back-login-btn" name="back-login-btn" class="btn">Back</button>
@@ -126,8 +126,7 @@
     </section>
 
     <section id="allpersons" class="tab">
-        <div class="alert">
-        </div>
+        <div class="notification alert alert-info" role="alert"></div>
         <div id="persons">
             <h3>Suchresultate:</h3>
             <ul>
@@ -136,6 +135,12 @@
         </div>
         <div id="friendrequests">
             <h3>Offene Anfragen:</h3>
+            <ul>
+
+            </ul>
+        </div>
+        <div id="awaitingfriendrequests">
+            <h3>Ausstehende Anfragen:</h3>
             <ul>
 
             </ul>

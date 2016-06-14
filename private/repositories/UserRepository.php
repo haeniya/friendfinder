@@ -44,6 +44,16 @@ class UserRepository
         echo json_encode($results);
     }
 
+    function getAwaitingFriendRequests($userid){
+        $selection = $this->db->prepare('Select username, id from users where id IN (Select user2_id from relationships where user1_id = ? and friends = 0)');
+        $selection->bindValue(1, $userid);
+        $selection->execute();
+
+        $results = $selection->fetchAll(PDO::FETCH_ASSOC);
+        $selection->closeCursor();
+        echo json_encode($results);
+    }
+
     function acceptFriendRequest($friendID, $userID){
         $selection = $this->db->prepare('UPDATE relationships SET friends = 1 where user1_id= ? and user2_id= ?');
         $selection->bindValue(2, $friendID);
@@ -66,10 +76,13 @@ class UserRepository
         return $resultArray;
     }
 
-    function getUsers($prefix) {
+    /*Gets only users which are neither friends nor in an open friend request*/
+    function getUsers($prefix, $userid) {
 
-        $selection = $this->db->prepare('SELECT username,id FROM users where username like ?');
+        $selection = $this->db->prepare('Select username, id from users where username like ? and id NOT IN (Select user2_id from relationships where user1_id = ?) AND id NOT IN (Select user1_id from relationships where user2_id = ?)');
         $selection->bindValue(1, $prefix.'%');
+        $selection->bindValue(2, $userid);
+        $selection->bindValue(3, $userid);
         $selection->execute();
 
         $results = $selection->fetchAll(PDO::FETCH_ASSOC);

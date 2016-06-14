@@ -34,6 +34,9 @@ main > section {
     background: #3d648a;
 
 }
+.nav-justified > li {
+    display:table-cell;
+}
 
 #register, #allpersons, #map {
     display: none;
@@ -162,4 +165,11 @@ nav li {
 .nav-pills>li.active>a, .nav-pills >li.active>a:focus, .nav-pills>li.active>a:hover {
     color: #ffffff;
     background-color: #19b9e7;
+}
+
+input:required:invalid, input:focus:invalid {
+    border: 1px solid red;
+}
+input:required:valid {
+    border: default;
 }
