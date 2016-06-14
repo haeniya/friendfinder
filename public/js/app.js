@@ -92,7 +92,17 @@ $( document ).ready(function() {
 
     $("#registration-form").on("click", "#register-send-btn", function(event){
         event.preventDefault();
-        registerUser({username: $("#form-register-username").val(), firstname: $("#form-first-name").val(), lastname: $("#form-last-name").val(), email: $("#form-email").val(), password: $("#form-register-password").val()} );
+        var validationResult = validateRegisterForm();
+        if (validationResult) {
+            $('#register-alert').hide();
+            registerUser({
+                username: $("#form-register-username").val(),
+                firstname: $("#form-first-name").val(),
+                lastname: $("#form-last-name").val(),
+                email: $("#form-email").val(),
+                password: $("#form-register-password").val()
+            });
+        }
     });
 
 
@@ -259,6 +269,45 @@ function checkLogin(formData){
     });
 }
 
+function validateRegisterForm() {
+    var errorString = "";
+    if (!$.trim($('#form-register-username').val())) {
+        errorString += "<p>- Bitte geben Sie einen Benutzernamen ein.</p>"
+    }
+    if (!$.trim($('#form-first-name').val())) {
+        errorString += '<p>- Bitte geben Sie einen Vornamen ein.</p>';
+    }
+    if (!$.trim($('#form-last-name').val())) {
+        errorString += "<p>- Bitte geben Sie einen Nachnamen ein.</p>"
+    }
+    if (!$.trim($('#form-email').val())) {
+        errorString += "<p>- Bitte geben Sie ein E-Mail Adresse ein.</p>"
+    } else if (!validateEmail($('#form-email').val())) {
+        errorString += "<p>- Bitte geben Sie eine korrekte Emailadresse ein.</p>"
+    }
+
+    if (!$.trim($('#form-register-password').val())) {
+        errorString += "<p>- Bitte geben Sie ein Passwort ein.</p>"
+    } else if ($('#form-register-password').val() !== $('#form-confirm-pwd').val()) {
+        errorString += "<p>- Die eingegebenen Passwörter stimmen nicht überein.</p>"
+    }
+
+
+    if (errorString !== "") {
+        $('#register-alert').html(errorString);
+        $('#register-alert').show();
+    } else {
+        $('#register-alert').hide();
+    }
+
+    return errorString == "";
+}
+
+function validateEmail(email) {
+    var re = /^(([^<>()\[\]\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(email);
+}
+
 function registerUser(formData){
     console.log(formData);
     $.ajax({
@@ -396,13 +445,17 @@ function answerFriendRequest(answer, friendID) {
         dataType: 'json',
         success: function(data, textStatus, jqXHR)
         {
-            if(anser == "accepted"){
-                $('#allpersons .notification').text("Freundschaftsanfrage wurde akzeptiert!");
-                $('#allpersons .notification').fadeIn();
+            if(answer == "accept"){
+                $('#allpersons .alert').addClass("alert-success");
+                $('#allpersons .alert').removeClass("alert-danger");
+                $('#allpersons .alert').text("Freundschaftsanfrage wurde akzeptiert!");
+                $('#allpersons .alert').fadeIn();
             }
             else {
-                $('#allpersons .notification').text("Freundschaftsanfrage wurde abgelehnt!");
-                $('#allpersons .notification').fadeIn();
+                $('#allpersons .alert').addClass("alert-danger");
+                $('#allpersons .alert').removeClass("alert-success");
+                $('#allpersons .alert').text("Freundschaftsanfrage wurde abgelehnt!");
+                $('#allpersons .alert').fadeIn();
             }
             console.log("worked");
             //$('#friends li[data-friend-id='+friendID+']').remove();
@@ -422,8 +475,10 @@ function sendFriendRequest(personID){
         success: function(data, textStatus, jqXHR)
         {
             console.log("worked");
-            $('#allpersons .notification').text("Freundschaftsanfrage wurde erfolgreich gesendet!");
-            $('#allpersons .notification').fadeIn();
+            $('#allpersons .alert').addClass("alert-success");
+            $('#allpersons .alert').removeClass("alert-danger");
+            $('#allpersons .alert').text("Freundschaftsanfrage wurde erfolgreich gesendet!");
+            $('#allpersons .alert').fadeIn();
             //$('#friends li[data-friend-id='+friendID+']').remove();
         },
         error: function (jqXHR, textStatus, errorThrown) {

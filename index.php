@@ -80,6 +80,8 @@
                 </div>
             </div>
             <div class="form-bottom">
+                <div class="alert alert-warning" id="register-alert" style="display: none;">
+                </div>
                 <form role="form" action="" method="post" id="registration-form">
                     <div class="form-group">
                         <label class="sr-only" for="form-register-username">Username</label>
@@ -123,7 +125,8 @@
     </section>
 
     <section id="allpersons" class="tab">
-        <div class="notification"></div>
+        <div class="alert">
+        </div>
         <div id="persons">
             <h3>Suchresultate:</h3>
             <ul>
