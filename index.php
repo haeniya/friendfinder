@@ -45,7 +45,7 @@
                 </div>
             </div>
             <div class="form-bottom">
-                <div class="alert alert-warning" style="display: none"></div>
+                <div class="alert alert-info" style="display: none"></div>
                 <form role="form" action="" method="post" id="login-form">
                     <div class="form-group">
                         <label class="sr-only" for="form-username">Username</label>

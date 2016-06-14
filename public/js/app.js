@@ -268,7 +268,7 @@ function checkLogin(formData){
                 setInterval(saveCurrentPosition, 20000);
             } else {
                 $("#login").find(".alert").text("Benutzername oder Passwort falsch");
-                $("#login").find(".alert").fadeIn();
+                $("#login").find(".alert").fadeIn().delay(3000).fadeOut();
             }
             console.log(data);
             //data - response from server
@@ -328,15 +328,18 @@ function registerUser(formData){
         success: function(data, textStatus, jqXHR)
         {
             if(data.registerstatus){
+                $('#login').find('.alert').text("Registrierung war erfolgreich");
+                $('#login').find('.alert').fadeIn().delay(3000).fadeOut();
                 switchView('login');
             }
             else {
-                $("#register").find(".notification").text("Etwas ist schiefgelaufen");
+                $("#register").find(".alert").text("Etwas ist schiefgelaufen");
             }
             console.log(data);
             //data - response from server
         },
         error: function (jqXHR, textStatus, errorThrown) {
+            $("#register").find(".alert").text("Etwas ist schiefgelaufen");
             console.log("fail");
             console.log(textStatus);
             console.log(errorThrown);
