@@ -36,6 +36,7 @@ main > section {
 }
 .nav-justified > li {
     display:table-cell;
+    width: 1%;
 }
 
 #register, #allpersons, #map {

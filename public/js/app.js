@@ -54,6 +54,7 @@ $( document ).ready(function() {
         }
     });
     $("nav").on("click", "#logout", function(event){
+        console.log("logotu1");
         event.preventDefault();
         logout();
     });
@@ -532,16 +533,18 @@ function sendFriendRequest(personID){
 }
 
 function logout(){
+    console.log("logout");
     // clear localStorage
     localStorage.removeItem('username');
     localStorage.removeItem('password');
+
     $.ajax({
         url : "restAPI/logout",
         type: "get",
         success: function(data, textStatus, jqXHR)
         {
             switchView('login');
-            //$('#friends li[data-friend-id='+friendID+']').remove();
+            location.reload();
         },
         error: function (jqXHR, textStatus, errorThrown) {
             console.log("fail");
@@ -549,6 +552,8 @@ function logout(){
             console.log(errorThrown);
         }
     });
+    location.reload();
+
 }
 
 function reloadFriendList(){
