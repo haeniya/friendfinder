@@ -41,46 +41,59 @@ $( document ).ready(function() {
 
 });
 
-
-
 function userIsLoggedIn(){
     var userId = $('#userinfo').data('info');
     return userId > 0;
 }
 
+/**
+ * This function switches between the different views of the single page application.
+ * @param viewId id of the view/section which should be shown.
+ */
 function switchView(viewId){
     $('.tab').hide();
-    var searchBox = $('#search');
-    SetonlyContentModeEnabled(viewId == 'login' || viewId == 'register');
-
-    if(viewId == 'map'){
-        initAutocompleteFriends();
-    }else{
-        var searchInput = $(".js-search-box");
-        if(searchInput.hasClass('ui-autocomplete-input')){
-            // remove autocomplete
-            searchInput.autocomplete("destroy");
-        }
-    }
+    toggleSiteElements(viewId == 'login' || viewId == 'register');
+    handleAutoComplete(viewId);
     $('nav li.active').removeClass('active');
     $('nav li.' + viewId + '-view').addClass('active');
     $('#' + viewId).show();
 }
 
-function SetonlyContentModeEnabled(isEnabled){
+/**
+ * This function toggles (show/hide) the navigation and search box depending on the active view.
+ * @param isLoginPage if the active view is register or login the search box and navigation are hidden.
+ */
+function toggleSiteElements(isLoginPage){
     var searchBox = $('#search');
-    if(isEnabled) {
+    if(isLoginPage) {
         searchBox.hide();
         $('nav').hide();
-    }
-
-    else{
+    }else{
         $('nav').show();
         searchBox.show();
     }
-
 }
 
+/**
+ * This function handles the auto-complete function of the search box.
+ * @param viewId active view
+ */
+function handleAutoComplete(viewId){
+    if(viewId == 'map'){
+        initAutocompleteFriends();
+    }else{
+        var searchInput = $(".js-search-box");
+        if(searchInput.hasClass('ui-autocomplete-input')){
+            // remove auto-complete from search input field
+            searchInput.autocomplete("destroy");
+        }
+    }
+}
+
+/**
+ * This function gets the current active view and returns the id.
+ * @returns id of the current active view
+ */
 function getActiveView(){
     return $('main').find('section:visible:first').attr('id');
 }
