@@ -426,8 +426,10 @@ function deleteFriend(friendID){
         success: function(data, textStatus, jqXHR)
         {
             console.log("friend deleted");
-            $('#allpersons .notification').text("Freund erfolgreich gelöscht!");
-            $('#allpersons .notification').fadeIn();
+            $('#allpersons .alert').addClass("alert-danger");
+            $('#allpersons .alert').removeClass("alert-success");
+            $('#allpersons .alert').text("Freund erfolgreich gelöscht!");
+            $('#allpersons .alert').fadeIn();
             $('#friends li[data-friend-id='+friendID+']').remove();
         },
         error: function (jqXHR, textStatus, errorThrown) {
