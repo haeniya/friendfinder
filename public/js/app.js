@@ -100,6 +100,7 @@ $( document ).ready(function() {
                 username: $("#form-register-username").val(),
                 firstname: $("#form-first-name").val(),
                 lastname: $("#form-last-name").val(),
+                livingplace: $('#form-living-place').val(),
                 email: $("#form-email").val(),
                 password: $("#form-register-password").val()
             });
@@ -199,12 +200,14 @@ function loadMap(position) {
 function searchFriends(){
     $.get("restAPI/friendsPosition", function(data) {
         data.forEach(function(item){
+            var date = new Date(item.timestamp);
             var markerIcon = 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=|FF0000|ffffff',
                 position = new google.maps.LatLng(item.lat, item.lng),
-                date = new Date(item.timestamp),
                 tooltipData = '<div class="info-window" data-lat="'+item.lat+'" data-lng="'+item.lng+'"> \
                                <h3>'+ item.firstname + ' ' + item.lastname +'</h3> \
-                                <p>Last time logged in: ' + date + '</p><button class="btn btn-info route-btn" type="button"> \
+                                <p>Last time logged in: ' + date.toLocaleDateString() + ' ' + date.toLocaleTimeString() + '</p>\
+                                <p>Living place: ' + item.livingplace + ' </p>\
+                                <button class="btn btn-info route-btn" type="button"> \
                                 Route \
                                 </button><div class="distance"></div><div class="duration"></div></div>',
                 infoWindow = new google.maps.InfoWindow({
@@ -290,6 +293,9 @@ function validateRegisterForm() {
     if (!$.trim($('#form-last-name').val())) {
         errorString += "<p>- Bitte geben Sie einen Nachnamen ein.</p>"
     }
+    if (!$.trim($('#form-living-place').val())) {
+        errorString += "<p>- Bitte geben Sie einen Wohnort ein.</p>"
+    }
     if (!$.trim($('#form-email').val())) {
         errorString += "<p>- Bitte geben Sie ein E-Mail Adresse ein.</p>"
     } else if (!validateEmail($('#form-email').val())) {
@@ -348,7 +354,6 @@ function registerUser(formData){
 }
 
 function saveCurrentPosition(){
-    console.log("save position");
     navigator.geolocation.getCurrentPosition(function(position){
         var positionData = {lat: position.coords.latitude, lng: position.coords.longitude};
 
@@ -362,7 +367,10 @@ function saveCurrentPosition(){
                 console.error("Failed to update position!");
             }
         }, "json");
+        // reload map
+        loadMap(position);
     });
+
 }
 
 function getFriendList(){

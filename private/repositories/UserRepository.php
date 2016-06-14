@@ -110,10 +110,11 @@ class UserRepository
     }
 
     function register($data) {
-        $selection = $this->db->prepare('INSERT INTO users (firstname, lastname, username, password, email) VALUES (:firstname, :lastname, :username, :password, :email)');
+        $selection = $this->db->prepare('INSERT INTO users (firstname, lastname, username, livingplace, password, email) VALUES (:firstname, :lastname, :username, :livingplace, :password, :email)');
         $selection->bindParam(':firstname', $data['firstname']);
         $selection->bindParam(':lastname', $data['lastname']);
         $selection->bindParam(':username', $data['username']);
+        $selection->bindParam(':livingplace', $data['livingplace']);
         $selection->bindParam(':password', sha1($data['password']));
         $selection->bindParam(':email', $data['email']);
         $selection->execute();
