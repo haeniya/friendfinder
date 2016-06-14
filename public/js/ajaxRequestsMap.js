@@ -1,10 +1,12 @@
+/**
+ * This function saves the current position of the client to the database.
+ *
+ */
 function saveCurrentPosition(){
     navigator.geolocation.getCurrentPosition(function(position){
         var positionData = {lat: position.coords.latitude, lng: position.coords.longitude};
-
         $.post( "restAPI/updatePosition", {position: JSON.stringify(positionData)}, function(data) {
             if(data.success) {
-                console.log("position successfully updated");
                 var current = $('#userinfo');
                 current.data('lat', positionData.lat);
                 current.data('lng', positionData.lng);
@@ -12,10 +14,7 @@ function saveCurrentPosition(){
                 console.error("Failed to update position!");
             }
         }, "json");
-        // reload map
-        //loadMap(position);
     });
-
 }
 
 function initAutocompleteFriends(){
@@ -30,7 +29,6 @@ function initAutocompleteFriends(){
             scroll: true,
             select: function (event, ui) {
                 var index = availableTags.indexOf(ui.item.value);
-                console.log(data[index].lat, data[index].lng);
                 var position = new google.maps.LatLng(data[index].lat, data[index].lng);
                 map.setCenter(position);
             }
@@ -46,11 +44,10 @@ function searchFriends(){
                 position = new google.maps.LatLng(item.lat, item.lng),
                 tooltipData = '<div class="info-window" data-lat="'+item.lat+'" data-lng="'+item.lng+'"> \
                                <h3>'+ item.firstname + ' ' + item.lastname +'</h3> \
-                                <p>Last time logged in: ' + date.toLocaleDateString() + ' ' + date.toLocaleTimeString() + '</p>\
-                                <p>Living place: ' + item.livingplace + ' </p>\
-                                <button class="btn btn-info route-btn" type="button"> \
-                                Route \
-                                </button><div class="distance"></div><div class="duration"></div></div>',
+                                <p>Last time logged in: ' + date.toLocaleDateString() + ' ' + date.toLocaleTimeString() + '</p> \
+                                <p>Living place: ' + item.livingplace + ' </p> \
+                                <button class="btn btn-info route-btn" type="button"> Route </button>\
+                                <div class="distance"></div><div class="duration"></div></div>',
                 infoWindow = new google.maps.InfoWindow({
                     content: tooltipData
                 });

@@ -1,3 +1,7 @@
+/**
+ * This function calculates the route to a specific friend from the current position of the client.
+ * @param routebutton clicked button of the marker
+ */
 function calculateRouteToMarker(routebutton){
     // calculate route to this marker
     var directionsDisplay = new google.maps.DirectionsRenderer();
@@ -18,6 +22,12 @@ function calculateRouteToMarker(routebutton){
     displayRoute(directionsService, infoWindow, directionsDisplay);
 }
 
+/**
+ * This function draws the route on the map and shows the distance and the travel duration.
+ * @param directionsService API Service to calculate the route
+ * @param infoWindow Info window to display the duration and distance
+ * @param directionsDisplay Used to display the route
+ */
 function displayRoute(directionsService, infoWindow, directionsDisplay){
     directionsService.route(request, function(result, status) {
         if (status == google.maps.DirectionsStatus.OK) {
@@ -27,7 +37,6 @@ function displayRoute(directionsService, infoWindow, directionsDisplay){
         }
     });
 }
-
 
 /**
  * This function gets the current location of the client and loads the map.

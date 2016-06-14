@@ -1,4 +1,6 @@
-
+/**
+ * Gets the data for the friend list.
+ */
 function getFriendList(){
     $.ajax({
         url : "restAPI/friends",
@@ -19,6 +21,10 @@ function getFriendList(){
     });
 }
 
+/**
+ * Retrieves all people with a username containing a specific prefix.
+ * @param prefix Prefix that the user entered in the search box.
+ */
 function searchPeople(prefix){
     $.ajax({
         url : "restAPI/users/"+prefix,
@@ -38,6 +44,10 @@ function searchPeople(prefix){
         }
     });
 }
+
+/**
+ * Retrieves all open requests and appends them to the list.
+ */
 function getOpenRequests(){
     $.ajax({
         url : "restAPI/FriendRequests",
@@ -57,6 +67,10 @@ function getOpenRequests(){
         }
     });
 }
+
+/**
+ * Retrieves all open requests and adds them to the appropriate list.
+ */
 function getAwaitingRequests(){
     $.ajax({
         url : "restAPI/FriendRequests/awaiting",
@@ -76,6 +90,10 @@ function getAwaitingRequests(){
         }
     });
 }
+/**
+ * This function deletes a specific friend from the current user.
+ * @param friendID Id of the friend to be removed.
+ */
 function deleteFriend(friendID){
     $.ajax({
         url : "restAPI/friends/"+friendID,
@@ -91,6 +109,11 @@ function deleteFriend(friendID){
         }
     });
 }
+/**
+ * Answers a friend request.
+ * @param answer Answer of the user (accept/decline)
+ * @param friendID User id of the user who sent the request.
+ */
 function answerFriendRequest(answer, friendID) {
     $.ajax({
         url : "restAPI/FriendRequests/"+answer+"/"+friendID,
@@ -114,6 +137,10 @@ function answerFriendRequest(answer, friendID) {
         }
     });
 }
+/**
+ * Sends a friend request to a user.
+ * @param personID User id of the future friend.
+ */
 function sendFriendRequest(personID){
     $.ajax({
         url : "restAPI/FriendRequests/new/" +personID,

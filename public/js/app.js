@@ -19,7 +19,6 @@ $( document ).ready(function() {
     });
 
     $("nav").on("click", "#logout", function(event){
-        console.log("logotu1");
         event.preventDefault();
         logout();
     });
@@ -71,7 +70,6 @@ $( document ).ready(function() {
         }
     });
 
-
     $('#register-btn').on('click', function (event) {
         event.preventDefault();
         switchView('register');
@@ -82,7 +80,7 @@ $( document ).ready(function() {
         switchView('login');
     });
 
-//Listen to dynamically added route buttons
+    //Listen to dynamically added route buttons
     $(document).on('click', '.route-btn', function(event){
         calculateRouteToMarker($(this));
     });

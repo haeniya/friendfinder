@@ -1,5 +1,4 @@
 function checkLogin(formData){
-    console.log(formData);
     $.ajax({
         url : "restAPI/login",
         type: "POST",
@@ -26,7 +25,6 @@ function checkLogin(formData){
     });
 }
 
-
 function logout(){
     // clear localStorage
     localStorage.removeItem('username');
@@ -46,21 +44,19 @@ function logout(){
     location.reload();
 
 }
+
 function registerUser(formData){
-    console.log(formData);
     $.ajax({
         url : "restAPI/register",
         type: "POST",
         data : formData,
         dataType: 'json',
-        success: function(data, textStatus, jqXHR)
-        {
+        success: function(data, textStatus, jqXHR) {
             if(data.registerstatus){
                 $('#login').find('.alert').text("Registrierung war erfolgreich");
                 $('#login').find('.alert').fadeIn().delay(3000).fadeOut();
                 switchView('login');
-            }
-            else {
+            }else {
                 $("#register").find(".alert").text("Etwas ist schiefgelaufen");
             }
         },

@@ -13,7 +13,6 @@ function toggleSiteElements(isLoginPage){
     }
 }
 
-
 /**
  * This function gets the current active view and returns the id.
  * @returns id of the current active view
