@@ -5,8 +5,6 @@ const MAP_ZOOM = 15;
 var map;
 
 $( document ).ready(function() {
-    initAutocompleteFriends();
-
     if(userIsLoggedIn()){
         switchView('map');
         getLocation();
@@ -110,9 +108,7 @@ $( document ).ready(function() {
 });
 
 function initAutocompleteFriends(){
-    console.log(getActivePage());
     $.get("restAPI/friendsPosition", function(data) {
-        console.log(data);
         var availableTags = [];
         data.forEach(function(item){
             availableTags.push(item.firstname + " " + item.lastname);
@@ -128,10 +124,6 @@ function initAutocompleteFriends(){
     }, 'json');
 }
 
-function getActivePage(){
-    return $('main').find('section:visible:first').id;
-}
-
 function userIsLoggedIn(){
     var userId = $('#userinfo').data('info');
     return userId > 0;
@@ -139,6 +131,15 @@ function userIsLoggedIn(){
 
 function switchView(viewId){
     $('.tab').hide();
+    if(viewId == 'map'){
+        console.log("map view");
+        initAutocompleteFriends();
+    }else{
+        if($(".js-search-box").hasClass('ui-autocomplete-input')){
+            console.log("remove autocomplete");
+            $(".js-search-box").autocomplete("destroy");
+        }
+    }
     var searchBox = $('#search');
     if(viewId == 'login' || viewId == 'register'){
         searchBox.hide();
