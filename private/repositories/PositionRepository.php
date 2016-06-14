@@ -19,14 +19,13 @@ class PositionRepository
     }
 
     function savePosition($position){
-        $currentTime = time();
         $user_id = $_SESSION['userid'];
         $selection = $this->db->prepare('SELECT * FROM positions WHERE user_id = ' . $user_id);
         $selection->execute();
         $results = $selection->fetchAll(PDO::FETCH_ASSOC);
         if(count($results) > 0){
             //update position
-            $sql = 'UPDATE positions SET `lat` = \''. $position['lat'] .'\', `lng` = \'' . $position['lng'] . '\', WHERE user_id = '. $user_id;
+            $sql = 'UPDATE positions SET `lat` = \''. $position['lat'] .'\', `lng` = \'' . $position['lng'] . '\', `timestamp` = CURRENT_TIMESTAMP WHERE user_id = '. $user_id;
             $statement = $this->db->prepare($sql);
             $statement->execute();
             return 1;
