@@ -71,10 +71,13 @@ class MainController
 
     /*get all open friendrequest*/
     public function getFriendRequests(){
-        $result = null;
         return $this->userRepo->getFriendRequests($_SESSION["userid"]);
     }
 
+    /*get all open awaiting friendrequest*/
+    public function getAwaitingFriendRequests(){
+        return $this->userRepo->getAwaitingFriendRequests($_SESSION["userid"]);
+    }
     /*decline friend request*/
     public function declineFriendRequest($friendID){
         return $this->userRepo->declineFriendRequest($_SESSION["userid"], $friendID);
@@ -87,7 +90,9 @@ class MainController
 
     /*get user according to prefix, used for search*/
     public function getUsers($prefix){
-        return $this->userRepo->getUsers($prefix);
+        if(isset($_SESSION['userid']) && !empty($_SESSION['userid'])) {
+            return $this->userRepo->getUsers($prefix, $_SESSION['userid']);
+        }
     }
 
     public function sendFriendRequest($friendID){

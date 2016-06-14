@@ -48,6 +48,9 @@ $app->get('/friends/{friendID}', function (Request $request, Response $response)
 $app->get('/FriendRequests', function (Request $request, Response $response) use ($app) {
     return $app->controller->getFriendRequests();
 });
+$app->get('/FriendRequests/awaiting', function (Request $request, Response $response) use ($app) {
+    return $app->controller->getAwaitingFriendRequests();
+});
 $app->get('/FriendRequests/new/{userID}', function (Request $request, Response $response) use ($app) {
     return $app->controller->sendFriendRequest($request->getAttribute('userID'));
 });

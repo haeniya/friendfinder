@@ -123,7 +123,7 @@
     </section>
 
     <section id="allpersons" class="tab">
-        <div class="notification"></div>
+        <div class="notification alert alert-info" role="alert"></div>
         <div id="persons">
             <h3>Suchresultate:</h3>
             <ul>
@@ -132,6 +132,12 @@
         </div>
         <div id="friendrequests">
             <h3>Offene Anfragen:</h3>
+            <ul>
+
+            </ul>
+        </div>
+        <div id="awaitingfriendrequests">
+            <h3>Ausstehende Anfragen:</h3>
             <ul>
 
             </ul>
