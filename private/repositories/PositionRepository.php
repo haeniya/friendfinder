@@ -32,7 +32,8 @@ class PositionRepository
             return 1;
         }else{
             //insert new position
-            $sql = 'INSERT INTO positions (`user_id`, `lat`, `lng`, `timestamp`) VALUES('. $user_id .',\''. $position['lat'] .'\', \'' . $position['lng'] . '\')';
+            $sql = 'INSERT INTO positions (`user_id`, `lat`, `lng`) VALUES('. $user_id .',\''. $position['lat'] .'\', \'' . $position['lng'] . '\')';
+            echo($sql);
             $this->db->exec($sql);
             return 1;
         }
